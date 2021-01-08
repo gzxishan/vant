@@ -14,7 +14,7 @@ module.exports = {
     },
   },
   site: {
-    defaultLang: 'zh-CN',
+    defaultLang: 'en-US',
     versions: [{
         label: '1.x',
         link: '/vant/1.x/'
