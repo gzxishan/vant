@@ -17,7 +17,7 @@ The value of field is bound with v-model.
 
 ```html
 <van-cell-group>
-  <van-field v-model="value" placeholder="Text" />
+  <van-field v-model="value" label="Label" placeholder="Text" />
 </van-cell-group>
 ```
 
@@ -100,7 +100,7 @@ export default {
 
 ### Error Info
 
-Use `error` or `error-message` to show error info
+Use `error` or `error-message` to show error info.
 
 ```html
 <van-cell-group>
@@ -123,7 +123,7 @@ Use `error` or `error-message` to show error info
 
 ### Insert Button
 
-Use button slot to insert button
+Use button slot to insert button.
 
 ```html
 <van-field v-model="sms" center clearable label="SMS" placeholder="SMS">
@@ -135,14 +135,21 @@ Use button slot to insert button
 
 ### Format Value
 
-Use `formatter` prop to format the input value
+Use `formatter` prop to format the input value.
 
 ```html
 <van-field
-  v-model="value"
+  v-model="value1"
   label="Text"
   :formatter="formatter"
-  placeholder="Format Value"
+  placeholder="Format On Change"
+/>
+<van-field
+  v-model="value2"
+  label="Text"
+  :formatter="formatter"
+  format-trigger="onBlur"
+  placeholder="Format On Blur"
 />
 ```
 
@@ -150,7 +157,8 @@ Use `formatter` prop to format the input value
 export default {
   data() {
     return {
-      value: '',
+      value1: '',
+      value2: '',
     };
   },
   methods: {
@@ -163,7 +171,7 @@ export default {
 
 ### Auto Resize
 
-Textarea Field can be auto resize when has `autosize` prop
+Textarea Field can be auto resize when has `autosize` prop.
 
 ```html
 <van-field
@@ -193,13 +201,13 @@ Textarea Field can be auto resize when has `autosize` prop
 
 ### Input Align
 
-Use `input-align` prop to align the input value
+Use `input-align` prop to align the input value.
 
 ```html
 <van-field
   v-model="value"
-  :label="Text"
-  :placeholder="Input Align Right"
+  label="Text"
+  placeholder="Input Align Right"
   input-align="right"
 />
 ```
@@ -216,22 +224,26 @@ Use `input-align` prop to align the input value
 | type | Input type, can be set to `tel` `digit`<br>`number` `textarea` `password` | _string_ | `text` |
 | size | Size，can be set to `large` | _string_ | - |
 | maxlength | Max length of value | _number \| string_ | - |
-| placeholder | Placeholder | _string_ | - |
+| placeholder | Input placeholder | _string_ | - |
 | border | Whether to show inner border | _boolean_ | `true` |
 | disabled | Whether to disable field | _boolean_ | `false` |
 | readonly | Whether to be readonly | _boolean_ | `false` |
+| colon `v2.7.2` | Whether to display colon after label | _boolean_ | `false` |
 | required | Whether to show required mark | _boolean_ | `false` |
+| center | Whether to center content vertically | _boolean_ | `true` |
 | clearable | Whether to be clearable | _boolean_ | `false` |
+| clear-trigger `v2.9.1` | When to display the clear icon, `always` means to display the icon when value is not empty, `focus` means to display the icon when input is focused | _string_ | `focus` |
 | clickable | Whether to show click feedback when clicked | _boolean_ | `false` |
 | is-link | Whether to show link icon | _boolean_ | `false` |
 | autofocus | Whether to auto focus, unsupported in iOS | _boolean_ | `false` |
-| show-word-limit `v2.2.8` | Whether to show word limit, need to set the `maxlength` prop | _boolean_ | `false` |
+| show-word-limit | Whether to show word limit, need to set the `maxlength` prop | _boolean_ | `false` |
 | error | Whether to show error info | _boolean_ | `false` |
 | error-message | Error message | _string_ | - |
 | formatter `v2.4.2` | Input value formatter | _Function_ | - |
-| arrow-direction `v2.0.4` | Can be set to `left` `up` `down` | _string_ | `right` |
+| format-trigger `v2.8.7` | When to format value，can be set to `onBlur` | _string_ | `onChange` |
+| arrow-direction | Can be set to `left` `up` `down` | _string_ | `right` |
 | label-class | Label className | _any_ | - |
-| label-width | Label width | _number \| string_ | `90px` |
+| label-width | Label width | _number \| string_ | `6.2em` |
 | label-align | Label align, can be set to `center` `right` | _string_ | `left` |
 | input-align | Input align, can be set to `center` `right` | _string_ | `left` |
 | error-message-align | Error message align, can be set to `center` `right` | _string_ | `left` |
@@ -247,17 +259,18 @@ Field support all native events of input tag
 
 | Event | Description | Parameters |
 | --- | --- | --- |
-| input | Triggered when input value changed | _value: string_ |
-| focus | Triggered when input gets focus | _event: Event_ |
-| blur | Triggered when input loses focus | _event: Event_ |
-| clear | Triggered when click clear icon | _event: Event_ |
-| click | Triggered when click Field | _event: Event_ |
-| click-left-icon | Triggered when click the left icon of Field | _event: Event_ |
-| click-right-icon | Triggered when click the right icon of Field | _event: Event_ |
+| input | Emitted when input value changed | _value: string_ |
+| focus | Emitted when input is focused | _event: Event_ |
+| blur | Emitted when input is blured | _event: Event_ |
+| clear | Emitted when the clear icon is clicked | _event: Event_ |
+| click | Emitted when component is clicked | _event: Event_ |
+| click-input `v2.8.1` | Emitted when the input is clicked | _event: Event_ |
+| click-left-icon | Emitted when the left icon is clicked | _event: Event_ |
+| click-right-icon | Emitted when the right icon is clicked | _event: Event_ |
 
 ### Methods
 
-Use [ref](https://vuejs.org/v2/api/#ref) to get Field instance and call instance methods
+Use [ref](https://vuejs.org/v2/api/#ref) to get Field instance and call instance methods.
 
 | Name  | Description         | Attribute | Return value |
 | ----- | ------------------- | --------- | ------------ |
@@ -266,10 +279,36 @@ Use [ref](https://vuejs.org/v2/api/#ref) to get Field instance and call instance
 
 ### Slots
 
-| Name       | Description       |
-| ---------- | ----------------- |
-| label      | Custom label      |
-| input      | Custom input      |
-| left-icon  | Custom left icon  |
-| right-icon | Custom right icon |
-| button     | Insert button     |
+| Name           | Description                 |
+| -------------- | --------------------------- |
+| label          | Custom label                |
+| input          | Custom input                |
+| left-icon      | Custom left icon            |
+| right-icon     | Custom right icon           |
+| button         | Insert button               |
+| extra `v2.8.2` | Custom content on the right |
+
+### Less Variables
+
+How to use: [Custom Theme](#/en-US/theme).
+
+| Name                             | Default Value   | Description |
+| -------------------------------- | --------------- | ----------- |
+| @field-label-width               | `6.2em`         | -           |
+| @field-label-color               | `@gray-7`       | -           |
+| @field-label-margin-right        | `@padding-sm`   | -           |
+| @field-input-text-color          | `@text-color`   | -           |
+| @field-input-error-text-color    | `@red`          | -           |
+| @field-input-disabled-text-color | `@gray-5`       | -           |
+| @field-placeholder-text-color    | `@gray-5`       | -           |
+| @field-icon-size                 | `16px`          | -           |
+| @field-clear-icon-size           | `16px`          | -           |
+| @field-clear-icon-color          | `@gray-5`       | -           |
+| @field-right-icon-color          | `@gray-6`       | -           |
+| @field-error-message-color       | `@red`          | -           |
+| @field-error-message-text-color  | `12px`          | -           |
+| @field-text-area-min-height      | `60px`          | -           |
+| @field-word-limit-color          | `@gray-7`       | -           |
+| @field-word-limit-font-size      | `@font-size-sm` | -           |
+| @field-word-limit-line-height    | `16px`          | -           |
+| @field-disabled-text-color       | `@gray-5`       | -           |

@@ -125,7 +125,7 @@ test('filter value during user input', () => {
   input.element.value = '2';
   input.trigger('input');
   expect(input.element.value).toEqual('2');
-  expect(wrapper.emitted('input')[1][0]).toEqual('2');
+  expect(wrapper.emitted('input')[1][0]).toEqual(2);
 });
 
 test('shoud watch value and format it', () => {
@@ -149,17 +149,40 @@ test('only allow interger', () => {
   });
 
   const input = wrapper.find('input');
-  input.element.value = '1.2';
+  input.element.value = '2.2';
   input.trigger('input');
   input.trigger('blur');
 
-  expect(wrapper.emitted('input')[0][0]).toEqual('1');
-  expect(wrapper.emitted('input')[1][0]).toEqual(1);
+  expect(wrapper.emitted('input')[0][0]).toEqual(2);
+});
+
+test('input invalid value and blur', () => {
+  const wrapper = mount(Stepper, {
+    propsData: {
+      value: '',
+    },
+  });
+
+  const input = wrapper.find('input');
+  input.element.value = '.';
+  input.trigger('input');
+  input.trigger('blur');
+
+  expect(wrapper.emitted('input').pop()).toEqual([1]);
 });
 
 test('stepper focus', () => {
-  const wrapper = mount(Stepper);
+  const wrapper = mount(Stepper, {
+    propsData: {
+      disableInput: true,
+    },
+  });
   const input = wrapper.find('input');
+
+  input.trigger('focus');
+  expect(wrapper.emitted('focus')).toBeFalsy();
+
+  wrapper.setProps({ disableInput: false });
   input.trigger('focus');
   expect(wrapper.emitted('focus')).toBeTruthy();
 });
@@ -222,8 +245,8 @@ test('async-change prop', () => {
   input.element.value = '3';
   input.trigger('input');
 
-  expect(wrapper.emitted('input')[1][0]).toEqual('3');
-  expect(wrapper.emitted('change')[1][0]).toEqual('3');
+  expect(wrapper.emitted('input')[1][0]).toEqual(3);
+  expect(wrapper.emitted('change')[1][0]).toEqual(3);
 });
 
 test('min value is 0', () => {
@@ -251,6 +274,16 @@ test('show-plus & show-minus props', () => {
   });
 
   expect(wrapper).toMatchSnapshot();
+});
+
+test('should hide input when show-input prop is false', () => {
+  const wrapper = mount(Stepper, {
+    propsData: {
+      showInput: false,
+    },
+  });
+
+  expect(wrapper.find('input').element.style.display).toEqual('none');
 });
 
 test('decimal-length prop', () => {
@@ -352,5 +385,31 @@ test('change integer', async () => {
 
   await later();
 
+  expect(wrapper.emitted('input')[0][0]).toEqual(1);
+});
+
+test('placeholder prop', () => {
+  const wrapper = mount(Stepper, {
+    propsData: {
+      placeholder: 'foo',
+    },
+  });
+  expect(wrapper.find('.van-stepper__input')).toMatchSnapshot();
+});
+
+test('allow-empty prop', () => {
+  const wrapper = mount(Stepper, {
+    propsData: {
+      value: '',
+      allowEmpty: true,
+    },
+  });
+
+  const input = wrapper.find('input');
+  input.trigger('blur');
+  expect(wrapper.emitted('input')).toBeFalsy();
+
+  wrapper.setProps({ allowEmpty: false });
+  input.trigger('blur');
   expect(wrapper.emitted('input')[0][0]).toEqual(1);
 });

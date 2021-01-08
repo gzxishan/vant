@@ -73,7 +73,7 @@ test('checkbox group', async () => {
   expect(wrapper.vm.result).toEqual(['b']);
 });
 
-test('click event', () => {
+test('click event', async () => {
   const onClick = jest.fn();
   const wrapper = mount(Checkbox, {
     listeners: {
@@ -82,10 +82,12 @@ test('click event', () => {
   });
 
   wrapper.trigger('click');
+  await later();
   expect(onClick).toHaveBeenCalledTimes(1);
 
   const icon = wrapper.find('.van-checkbox__icon');
   icon.trigger('click');
+  await later();
   expect(onClick).toHaveBeenCalledTimes(2);
 });
 
@@ -158,7 +160,7 @@ test('toggleAll method', async () => {
       <van-checkbox-group v-model="result" ref="group">
         <van-checkbox name="a" />
         <van-checkbox name="b" />
-        <van-checkbox name="c" />
+        <van-checkbox name="c" disabled />
       </van-checkbox-group>
     `,
     data() {
@@ -182,6 +184,14 @@ test('toggleAll method', async () => {
   expect(wrapper.vm.result).toEqual([]);
 
   wrapper.vm.toggleAll(true);
+  await later();
+  expect(wrapper.vm.result).toEqual(['a', 'b', 'c']);
+
+  wrapper.vm.toggleAll({ skipDisabled: true });
+  await later();
+  expect(wrapper.vm.result).toEqual(['c']);
+
+  wrapper.vm.toggleAll({ checked: true, skipDisabled: true });
   await later();
   expect(wrapper.vm.result).toEqual(['a', 'b', 'c']);
 });

@@ -185,10 +185,8 @@ export default createComponent({
       this.code = values[index].code;
       this.setValues();
 
-      let getValues = picker.getValues();
-      getValues = this.parseOutputValues(getValues);
-
-      this.$emit('change', picker, getValues, index);
+      const parsedValues = this.parseOutputValues(picker.getValues());
+      this.$emit('change', picker, parsedValues, index);
     },
 
     onConfirm(values, index) {
@@ -197,17 +195,29 @@ export default createComponent({
       this.$emit('confirm', values, index);
     },
 
+    getDefaultCode() {
+      if (this.columnsPlaceholder.length) {
+        return PLACEHOLDER_CODE;
+      }
+
+      const countyCodes = Object.keys(this.county);
+      if (countyCodes[0]) {
+        return countyCodes[0];
+      }
+
+      const cityCodes = Object.keys(this.city);
+      if (cityCodes[0]) {
+        return cityCodes[0];
+      }
+
+      return '';
+    },
+
     setValues() {
       let { code } = this;
 
       if (!code) {
-        if (this.columnsPlaceholder.length) {
-          code = PLACEHOLDER_CODE;
-        } else if (Object.keys(this.county)[0]) {
-          code = Object.keys(this.county)[0];
-        } else {
-          code = '';
-        }
+        code = this.getDefaultCode();
       }
 
       const { picker } = this.$refs;
@@ -300,8 +310,9 @@ export default createComponent({
         showToolbar
         valueKey="name"
         title={this.title}
-        loading={this.loading}
         columns={this.displayColumns}
+        loading={this.loading}
+        readonly={this.readonly}
         itemHeight={this.itemHeight}
         swipeDuration={this.swipeDuration}
         visibleItemCount={this.visibleItemCount}

@@ -17,6 +17,15 @@ exports[`disable animate 1`] = `
 
 exports[`render chidren 1`] = `<div>Content</div>`;
 
+exports[`round prop 1`] = `
+<div class="van-skeleton van-skeleton--animate van-skeleton--round">
+  <div class="van-skeleton__avatar van-skeleton__avatar--round"></div>
+  <div class="van-skeleton__content">
+    <h3 class="van-skeleton__title"></h3>
+  </div>
+</div>
+`;
+
 exports[`row-width array 1`] = `
 <div class="van-skeleton van-skeleton--animate">
   <div class="van-skeleton__content">

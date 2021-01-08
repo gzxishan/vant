@@ -1,23 +1,28 @@
 <template>
-  <div class="van-hairline--bottom">
-    <van-field
-      readonly
-      clickable
-      name="datetimePicker"
-      :value="value"
-      :border="false"
-      :label="t('label')"
-      :placeholder="t('placeholder')"
-      @click="showPicker = true"
-    />
-    <van-popup v-model="showPicker" position="bottom">
-      <van-datetime-picker
-        type="time"
-        @confirm="onConfirm"
-        @cancel="onCancel"
-      />
-    </van-popup>
-  </div>
+  <van-field
+    readonly
+    clickable
+    name="datetimePicker"
+    :value="value"
+    :label="t('label')"
+    :placeholder="t('placeholder')"
+    @click="showPicker = true"
+  >
+    <template #extra>
+      <van-popup
+        v-model="showPicker"
+        round
+        position="bottom"
+        get-container="body"
+      >
+        <van-datetime-picker
+          type="time"
+          @confirm="onConfirm"
+          @cancel="onCancel"
+        />
+      </van-popup>
+    </template>
+  </van-field>
 </template>
 
 <script>

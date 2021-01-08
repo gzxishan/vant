@@ -406,6 +406,23 @@ test('click to preview image', async () => {
   expect(images.length).toEqual(1);
 });
 
+test('preview-options prop', async () => {
+  const wrapper = mount(Uploader, {
+    propsData: {
+      fileList: [{ url: IMAGE }],
+      previewOptions: {
+        closeable: true,
+      },
+    },
+  });
+
+  wrapper.find('.van-image').trigger('click');
+  await later();
+
+  const closeIcon = document.querySelectorAll('.van-image-preview__close-icon');
+  expect(closeIcon.length).toEqual(1);
+});
+
 test('closeImagePreview method', () => {
   const close = jest.fn();
   const wrapper = mount(Uploader, {
@@ -450,7 +467,7 @@ test('close-preview event', async () => {
   wrapper.find('.van-image').trigger('click');
 
   const preview = document.querySelector('.van-image-preview');
-  const swipe = preview.querySelector('.van-swipe__track');
+  const swipe = preview.querySelector('.van-swipe-item');
   triggerDrag(swipe, 0, 0);
 
   await later(300);
@@ -462,4 +479,61 @@ test('show-upload prop', () => {
   expect(wrapper.contains('.van-uploader__upload')).toBeTruthy();
   wrapper.setProps({ showUpload: false });
   expect(wrapper.contains('.van-uploader__upload')).toBeFalsy();
+});
+
+test('file message should be reactive', (done) => {
+  const wrapper = mount(Uploader, {
+    propsData: {
+      fileList: [],
+      afterRead(file) {
+        file.status = 'uploading';
+        file.message = 1;
+        setTimeout(() => {
+          file.message = 2;
+          expect(wrapper).toMatchSnapshot();
+          done();
+        });
+      },
+    },
+    listeners: {
+      input(fileList) {
+        wrapper.setProps({ fileList });
+      },
+    },
+  });
+
+  wrapper.vm.onChange(file);
+});
+
+test('multiFile upload filter max-size file', async () => {
+  const SmallFile = function () {
+    this.size = 100;
+  };
+  const multiFiles = {
+    target: { files: [mockFile, new SmallFile([], 'small-test.jpg')] },
+  };
+
+  const wrapper = mount(Uploader, {
+    propsData: {
+      maxSize: 1000,
+    },
+  });
+  wrapper.vm.onChange(multiFiles);
+
+  await later();
+
+  expect(wrapper.emitted('oversize')[0]).toBeTruthy();
+});
+
+test('preview-cover slot', () => {
+  const wrapper = mount(Uploader, {
+    propsData: {
+      fileList: [{ url: IMAGE }, { url: IMAGE }],
+    },
+    scopedSlots: {
+      'preview-cover': (item) => `url: ${item.url}, index: ${item.index}`,
+    },
+  });
+
+  expect(wrapper).toMatchSnapshot();
 });

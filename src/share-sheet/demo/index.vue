@@ -1,6 +1,6 @@
 <template>
   <demo-section>
-    <demo-block :title="t('basicUsage')">
+    <demo-block card :title="t('basicUsage')">
       <van-cell is-link :title="t('showSheet')" @click="show.basic = true" />
       <van-share-sheet
         v-model="show.basic"
@@ -10,7 +10,7 @@
       />
     </demo-block>
 
-    <demo-block :title="t('multiLine')">
+    <demo-block card :title="t('multiLine')">
       <van-cell
         is-link
         :title="t('showSheet')"
@@ -24,7 +24,7 @@
       />
     </demo-block>
 
-    <demo-block :title="t('customIcon')">
+    <demo-block card :title="t('customIcon')">
       <van-cell
         is-link
         :title="t('showSheet')"
@@ -37,12 +37,12 @@
       />
     </demo-block>
 
-    <demo-block :title="t('withDesc')">
+    <demo-block card :title="t('withDesc')">
       <van-cell is-link :title="t('showSheet')" @click="show.withDesc = true" />
       <van-share-sheet
         v-model="show.withDesc"
         :title="t('title')"
-        :options="options"
+        :options="optionsWithDesc"
         :description="t('description')"
         @select="onSelect"
       />
@@ -67,6 +67,7 @@ export default {
       withDesc: '展示描述信息',
       customIcon: '自定义图标',
       description: '描述信息',
+      weappQrcode: '小程序码',
     },
     'en-US': {
       qq: 'QQ',
@@ -82,6 +83,7 @@ export default {
       withDesc: 'Show Description',
       customIcon: 'Custom Icon',
       description: 'Description',
+      weappQrcode: 'Weapp Qrcode',
     },
   },
 
@@ -118,6 +120,7 @@ export default {
           { name: this.t('link'), icon: 'link' },
           { name: this.t('poster'), icon: 'poster' },
           { name: this.t('qrcode'), icon: 'qrcode' },
+          { name: this.t('weappQrcode'), icon: 'weapp-qrcode' },
         ],
       ];
     },
@@ -136,6 +139,20 @@ export default {
           name: this.t('name'),
           icon: 'https://img.yzcdn.cn/vant/custom-icon-water.png',
         },
+      ];
+    },
+
+    optionsWithDesc() {
+      return [
+        { name: this.t('wechat'), icon: 'wechat' },
+        { name: this.t('weibo'), icon: 'weibo' },
+        {
+          name: this.t('link'),
+          icon: 'link',
+          description: this.t('description'),
+        },
+        { name: this.t('poster'), icon: 'poster' },
+        { name: this.t('qrcode'), icon: 'qrcode' },
       ];
     },
   },

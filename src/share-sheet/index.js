@@ -1,5 +1,5 @@
 // Utils
-import { createNamespace, isDef } from '../utils';
+import { createNamespace } from '../utils';
 
 // Mixins
 import { popupMixinProps } from '../mixins/popup';
@@ -7,7 +7,15 @@ import { popupMixinProps } from '../mixins/popup';
 // Components
 import Popup from '../popup';
 
-const PRESET_ICONS = ['qq', 'weibo', 'wechat', 'link', 'qrcode', 'poster'];
+const PRESET_ICONS = [
+  'qq',
+  'link',
+  'weibo',
+  'wechat',
+  'poster',
+  'qrcode',
+  'weapp-qrcode',
+];
 
 const [createComponent, bem, t] = createNamespace('share-sheet');
 
@@ -83,13 +91,20 @@ export default createComponent({
         <div class={bem('options', { border: showBorder })}>
           {options.map((option, index) => (
             <div
-              class={bem('option')}
+              role="button"
+              tabindex="0"
+              class={[bem('option'), option.className]}
               onClick={() => {
                 this.onSelect(option, index);
               }}
             >
               <img src={this.getIconURL(option.icon)} class={bem('icon')} />
               {option.name && <span class={bem('name')}>{option.name}</span>}
+              {option.description && (
+                <span class={bem('option-description')}>
+                  {option.description}
+                </span>
+              )}
             </div>
           ))}
         </div>
@@ -105,7 +120,7 @@ export default createComponent({
     },
 
     genCancelText() {
-      const cancelText = isDef(this.cancelText) ? this.cancelText : t('cancel');
+      const cancelText = this.cancelText ?? t('cancel');
 
       if (cancelText) {
         return (
@@ -114,6 +129,10 @@ export default createComponent({
           </button>
         );
       }
+    },
+
+    onClickOverlay() {
+      this.$emit('click-overlay');
     },
   },
 
@@ -133,6 +152,7 @@ export default createComponent({
         closeOnClickOverlay={this.closeOnClickOverlay}
         safeAreaInsetBottom={this.safeAreaInsetBottom}
         onInput={this.toggle}
+        onClick-overlay={this.onClickOverlay}
       >
         {this.genHeader()}
         {this.genRows()}

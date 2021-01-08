@@ -27,10 +27,15 @@ test('click delete key', () => {
   expect(wrapper.emitted('delete')).toBeTruthy();
 });
 
-test('click empty key', () => {
+test('click collapse key', () => {
   const wrapper = mount(NumberKeyboard);
   clickKey(wrapper.findAll('.van-key').at(9));
   expect(wrapper.emitted('input')).toBeFalsy();
+  expect(wrapper.emitted('blur')).toBeFalsy();
+
+  wrapper.setProps({ show: true });
+  clickKey(wrapper.findAll('.van-key').at(9));
+  expect(wrapper.emitted('blur')).toBeTruthy();
 });
 
 test('click close button', () => {
@@ -82,6 +87,16 @@ test('title-left slot', () => {
   const wrapper = mount(NumberKeyboard, {
     scopedSlots: {
       'title-left': () => 'Custom Title Left',
+    },
+  });
+
+  expect(wrapper).toMatchSnapshot();
+});
+
+test('extra-key prop', () => {
+  const wrapper = mount(NumberKeyboard, {
+    propsData: {
+      extraKey: 'foo',
     },
   });
 
@@ -210,4 +225,35 @@ test('show-delete-key prop', () => {
 
   wrapper.setData({ showDeleteKey: false });
   expect(wrapper.contains('.van-key--delete')).toBeFalsy();
+});
+
+test('close-button-loading prop', () => {
+  const wrapper = mount(NumberKeyboard, {
+    propsData: {
+      show: true,
+      theme: 'custom',
+      closeButtonLoading: true,
+    },
+  });
+
+  expect(wrapper.contains('.van-key__loading-icon')).toBeTruthy();
+});
+test('random-key-order prop', () => {
+  const wrapper = mount(NumberKeyboard, {
+    propsData: {
+      show: true,
+      randomKeyOrder: true,
+    },
+  });
+
+  const keys = [];
+  const clickKeys = [];
+  for (let i = 0; i < 9; i++) {
+    keys.push(i + 1);
+
+    clickKey(wrapper.findAll('.van-key').at(i));
+    clickKeys.push(wrapper.emitted('input')[i][0]);
+  }
+
+  expect(keys.every((v, k) => keys[k] === clickKeys[k])).toEqual(false);
 });

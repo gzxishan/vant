@@ -1,6 +1,6 @@
 <template>
   <demo-section>
-    <demo-block :title="t('basicUsage')">
+    <demo-block card :title="t('basicUsage')">
       <van-cell
         is-link
         :title="t('selectSingle')"
@@ -23,7 +23,7 @@
       />
     </demo-block>
 
-    <demo-block :title="t('quickSelect')">
+    <demo-block card :title="t('quickSelect')">
       <van-cell
         is-link
         :title="t('selectSingle')"
@@ -39,7 +39,7 @@
       />
     </demo-block>
 
-    <demo-block :title="t('customCalendar')">
+    <demo-block card :title="t('customCalendar')">
       <van-cell
         is-link
         :title="t('customColor')"
@@ -81,9 +81,15 @@
         :value="formatRange(date.maxRange)"
         @click="show('range', 'maxRange')"
       />
+
+      <van-cell
+        is-link
+        :title="t('firstDayOfWeek')"
+        @click="show('single', 'firstDayOfWeek')"
+      />
     </demo-block>
 
-    <demo-block :title="t('tiledDisplay')">
+    <demo-block card :title="t('tiledDisplay')">
       <van-calendar
         :title="t('calendar')"
         :poppable="false"
@@ -108,14 +114,13 @@
       :show-confirm="showConfirm"
       :confirm-text="confirmText"
       :confirm-disabled-text="confirmDisabledText"
+      :first-day-of-week="firstDayOfWeek"
       @confirm="onConfirm"
     />
   </demo-section>
 </template>
 
 <script>
-import { GREEN } from '../../utils/constant';
-
 export default {
   i18n: {
     'zh-CN': {
@@ -139,6 +144,7 @@ export default {
       customPosition: '自定义弹出位置',
       customCalendar: '自定义日历',
       confirmDisabledText: '请选择结束时间',
+      firstDayOfWeek: '自定义周起始日',
       tiledDisplay: '平铺展示',
     },
     'en-US': {
@@ -161,6 +167,7 @@ export default {
       customDayText: 'Custom Day Text',
       customPosition: 'Custom Position',
       customCalendar: 'Custom Calendar',
+      firstDayOfWeek: 'Custom First Day Of Week',
       confirmDisabledText: 'Select End Time',
       tiledDisplay: 'Tiled display',
     },
@@ -195,6 +202,7 @@ export default {
       tiledMaxDate: new Date(2012, 2, 20),
       confirmText: undefined,
       confirmDisabledText: undefined,
+      firstDayOfWeek: 0,
     };
   },
 
@@ -210,6 +218,7 @@ export default {
       this.showConfirm = true;
       this.confirmText = undefined;
       this.confirmDisabledText = undefined;
+      this.firstDayOfWeek = 0;
     },
 
     show(type, id) {
@@ -224,7 +233,7 @@ export default {
           this.showConfirm = false;
           break;
         case 'customColor':
-          this.color = GREEN;
+          this.color = '#1989fa';
           break;
         case 'customConfirm':
           this.confirmText = this.t('confirmText');
@@ -245,6 +254,9 @@ export default {
           break;
         case 'maxRange':
           this.maxRange = 3;
+          break;
+        case 'firstDayOfWeek':
+          this.firstDayOfWeek = 1;
           break;
       }
     },

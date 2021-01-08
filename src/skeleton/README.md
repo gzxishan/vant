@@ -56,6 +56,21 @@ export default {
 | avatar | Whether to show avatar placeholder | _boolean_ | `false` |
 | loading | Whether to show skeleton，pass `false` to show child component | _boolean_ | `true` |
 | animate | Whether to enable animation | _boolean_ | `true` |
+| round `v2.8.5` | Whether to show round title and row | _boolean_ | `false` |
 | title-width | Title width | _number \| string_ | `40%` |
 | avatar-size | Size of avatar placeholder | _number \| string_ | `32px` |
 | avatar-shape | Shape of avatar placeholder，can be set to `square` | _string_ | `round` |
+
+### Less Variables
+
+How to use: [Custom Theme](#/en-US/theme).
+
+| Name                              | Default Value   | Description |
+| --------------------------------- | --------------- | ----------- |
+| @skeleton-row-height              | `16px`          | -           |
+| @skeleton-row-background-color    | `@active-color` | -           |
+| @skeleton-row-margin-top          | `@padding-sm`   | -           |
+| @skeleton-title-width             | `40%`           | -           |
+| @skeleton-avatar-size             | `32px`          | -           |
+| @skeleton-avatar-background-color | `@active-color` | -           |
+| @skeleton-animation-duration      | `1.2s`          | -           |

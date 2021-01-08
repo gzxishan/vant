@@ -52,7 +52,7 @@ test('without price', () => {
 test('top slot', () => {
   const wrapper = mount(SubmitBar, {
     scopedSlots: {
-      top: () => 'top',
+      top: () => 'Custom Top',
     },
   });
 
@@ -106,5 +106,27 @@ test('disable safe-area-inset-bottom prop', () => {
       },
     },
   });
+  expect(wrapper).toMatchSnapshot();
+});
+
+test('button-color prop', () => {
+  const wrapper = mount(SubmitBar, {
+    context: {
+      props: {
+        buttonColor: 'red',
+      },
+    },
+  });
+  expect(wrapper).toMatchSnapshot();
+});
+
+test('button slot', () => {
+  const wrapper = mount(SubmitBar, {
+    buttonText: 'text',
+    scopedSlots: {
+      button: () => 'Custom button',
+    },
+  });
+
   expect(wrapper).toMatchSnapshot();
 });

@@ -20,10 +20,13 @@ const mockItems = [
     text: 'group1',
     children: [mockItem],
   },
+  {
+    text: 'group2',
+    children: [mockItem],
+  },
 ];
 
 test('click-nav event', () => {
-  const onNavClick = jest.fn();
   const onClickNav = jest.fn();
 
   const wrapper = mount(TreeSelect, {
@@ -32,21 +35,18 @@ test('click-nav event', () => {
     },
     context: {
       on: {
-        navclick: onNavClick,
         'click-nav': onClickNav,
       },
     },
   });
 
   const navItems = wrapper.findAll('.van-tree-select__nav-item');
-  navItems.at(0).trigger('click');
+  navItems.at(1).trigger('click');
 
-  expect(onNavClick).toHaveBeenCalledWith(0);
-  expect(onClickNav).toHaveBeenCalledWith(0);
+  expect(onClickNav).toHaveBeenCalledWith(1);
 });
 
 test('click-item event', () => {
-  const onItemClick = jest.fn();
   const onClickItem = jest.fn();
 
   const wrapper = mount(TreeSelect, {
@@ -55,7 +55,6 @@ test('click-item event', () => {
     },
     context: {
       on: {
-        itemclick: onItemClick,
         'click-item': onClickItem,
       },
     },
@@ -63,7 +62,6 @@ test('click-item event', () => {
 
   const items = wrapper.findAll('.van-tree-select__item');
   items.at(0).trigger('click');
-  expect(onItemClick).toHaveBeenCalledWith(mockItem);
   expect(onClickItem).toHaveBeenCalledWith(mockItem);
 });
 
@@ -147,13 +145,13 @@ test('height prop', () => {
   expect(wrapper).toMatchSnapshot();
 });
 
-test('nav info', () => {
+test('nav render badge', () => {
   const wrapper = mount(TreeSelect, {
     propsData: {
       items: [
         {
           text: 'group1',
-          info: 3,
+          badge: 3,
         },
       ],
     },
@@ -325,4 +323,17 @@ test('should sync value before trigger click-item event', (done) => {
 
   const items = wrapper.findAll('.van-tree-select__item');
   items.at(1).trigger('click');
+});
+
+test('selected-icon prop', () => {
+  const wrapper = mount(TreeSelect, {
+    propsData: {
+      items: mockItems,
+      activeId: 1,
+      mainActiveIndex: 0,
+      selectedIcon: 'foo',
+    },
+  });
+
+  expect(wrapper.find('.van-tree-select__item')).toMatchSnapshot();
 });

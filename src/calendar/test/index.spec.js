@@ -87,6 +87,27 @@ test('select event when type is multiple', async () => {
   );
 });
 
+test('select event when type is multiple', async () => {
+  const wrapper = mount(Calendar, {
+    propsData: {
+      type: 'multiple',
+      minDate,
+      maxDate,
+      poppable: false,
+      defaultDate: [minDate],
+    },
+  });
+
+  await later();
+
+  const days = wrapper.findAll('.van-calendar__day');
+  days.at(15).trigger('click');
+  await later();
+  days.at(15).trigger('click');
+
+  expect(formatDate(wrapper.emitted('unselect')[0][0])).toEqual('2010/1/16');
+});
+
 test('should not trigger select event when click disabled day', async () => {
   const wrapper = mount(Calendar, {
     propsData: {
@@ -434,28 +455,6 @@ test('color prop when type is range', async () => {
   await later();
 
   expect(wrapper).toMatchSnapshot();
-});
-
-test('should scroll to current month when show', async (done) => {
-  const wrapper = mount(Calendar, {
-    propsData: {
-      type: 'range',
-      minDate: new Date(2010, 0, 10),
-      maxDate: new Date(2010, 11, 10),
-      defaultDate: [new Date(2010, 3, 1), new Date(2010, 5, 1)],
-    },
-  });
-
-  Element.prototype.scrollIntoView = function () {
-    expect(this.parentNode).toEqual(
-      wrapper.findAll('.van-calendar__month').at(3).element
-    );
-    done();
-  };
-
-  wrapper.setProps({ value: true });
-
-  await later();
 });
 
 test('close event', () => {

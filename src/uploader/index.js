@@ -1,5 +1,5 @@
 // Utils
-import { createNamespace, addUnit, noop, isPromise } from '../utils';
+import { createNamespace, addUnit, noop, isPromise, isDef } from '../utils';
 import { toArray, readFile, isOversize, isImageFile } from './utils';
 
 // Mixins
@@ -24,11 +24,13 @@ export default createComponent({
 
   props: {
     disabled: Boolean,
+    lazyLoad: Boolean,
     uploadText: String,
     afterRead: Function,
     beforeRead: Function,
     beforeDelete: Function,
     previewSize: [Number, String],
+    previewOptions: Object,
     name: {
       type: [Number, String],
       default: '',
@@ -146,7 +148,7 @@ export default createComponent({
         Promise.all(files.map((file) => readFile(file, this.resultType))).then(
           (contents) => {
             const fileList = files.map((file, index) => {
-              const result = { file, status: '' };
+              const result = { file, status: '', message: '' };
 
               if (contents[index]) {
                 result.content = contents[index];
@@ -160,7 +162,7 @@ export default createComponent({
         );
       } else {
         readFile(files, this.resultType).then((content) => {
-          const result = { file: files, status: '' };
+          const result = { file: files, status: '', message: '' };
 
           if (content) {
             result.content = content;
@@ -174,21 +176,45 @@ export default createComponent({
     onAfterRead(files, oversize) {
       this.resetInput();
 
+      let validFiles = files;
+
       if (oversize) {
-        this.$emit('oversize', files, this.getDetail());
-        return;
+        let oversizeFiles = files;
+        if (Array.isArray(files)) {
+          oversizeFiles = [];
+          validFiles = [];
+          files.forEach((item) => {
+            if (item.file) {
+              if (item.file.size > this.maxSize) {
+                oversizeFiles.push(item);
+              } else {
+                validFiles.push(item);
+              }
+            }
+          });
+        } else {
+          validFiles = null;
+        }
+        this.$emit('oversize', oversizeFiles, this.getDetail());
       }
 
-      this.$emit('input', [...this.fileList, ...toArray(files)]);
+      const isValidFiles = Array.isArray(validFiles)
+        ? Boolean(validFiles.length)
+        : Boolean(validFiles);
 
-      if (this.afterRead) {
-        this.afterRead(files, this.getDetail());
+      if (isValidFiles) {
+        this.$emit('input', [...this.fileList, ...toArray(validFiles)]);
+
+        if (this.afterRead) {
+          this.afterRead(validFiles, this.getDetail());
+        }
       }
     },
 
     onDelete(file, index) {
-      if (this.beforeDelete) {
-        const response = this.beforeDelete(file, this.getDetail(index));
+      const beforeDelete = file.beforeDelete ?? this.beforeDelete;
+      if (beforeDelete) {
+        const response = beforeDelete(file, this.getDetail(index));
 
         if (!response) {
           return;
@@ -232,11 +258,11 @@ export default createComponent({
 
       this.imagePreview = ImagePreview({
         images: imageContents,
-        closeOnPopstate: true,
         startPosition: imageFiles.indexOf(item),
         onClose: () => {
           this.$emit('close-preview');
         },
+        ...this.previewOptions,
       });
     },
 
@@ -259,52 +285,69 @@ export default createComponent({
     },
 
     genPreviewMask(item) {
-      const { status } = item;
+      const { status, message } = item;
 
       if (status === 'uploading' || status === 'failed') {
         const MaskIcon =
           status === 'failed' ? (
-            <Icon name="warning-o" class={bem('mask-icon')} />
+            <Icon name="close" class={bem('mask-icon')} />
           ) : (
             <Loading class={bem('loading')} />
           );
 
+        const showMessage = isDef(message) && message !== '';
+
         return (
           <div class={bem('mask')}>
             {MaskIcon}
-            {item.message && (
-              <div class={bem('mask-message')}>{item.message}</div>
-            )}
+            {showMessage && <div class={bem('mask-message')}>{message}</div>}
           </div>
         );
       }
     },
 
     genPreviewItem(item, index) {
-      const showDelete = item.status !== 'uploading' && this.deletable;
+      const deleteAble = item.deletable ?? this.deletable;
+      const showDelete = item.status !== 'uploading' && deleteAble;
 
       const DeleteIcon = showDelete && (
-        <Icon
-          name="clear"
+        <div
           class={bem('preview-delete')}
           onClick={(event) => {
             event.stopPropagation();
             this.onDelete(item, index);
           }}
-        />
+        >
+          <Icon name="cross" class={bem('preview-delete-icon')} />
+        </div>
       );
+
+      const PreviewCoverContent = this.slots('preview-cover', {
+        index,
+        ...item,
+      });
+
+      const PreviewCover = PreviewCoverContent && (
+        <div class={bem('preview-cover')}>{PreviewCoverContent}</div>
+      );
+
+      const previewSize = item.previewSize ?? this.previewSize;
+      const imageFit = item.imageFit ?? this.imageFit;
 
       const Preview = isImageFile(item) ? (
         <Image
-          fit={this.imageFit}
+          fit={imageFit}
           src={item.content || item.url}
           class={bem('preview-image')}
-          width={this.previewSize}
-          height={this.previewSize}
+          width={previewSize}
+          height={previewSize}
+          lazyLoad={this.lazyLoad}
           onClick={() => {
             this.onPreviewImage(item);
           }}
-        />
+        >
+          {PreviewCover}
+        </Image>
       ) : (
         <div
           class={bem('file')}
@@ -317,6 +360,7 @@ export default createComponent({
           <div class={[bem('file-name'), 'van-ellipsis']}>
             {item.file ? item.file.name : item.url}
           </div>
+          {PreviewCover}
         </div>
       );
 

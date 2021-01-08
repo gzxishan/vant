@@ -1,7 +1,12 @@
 import sass from 'sass';
 import FriendlyErrorsPlugin from '@nuxt/friendly-errors-webpack-plugin';
 import { VueLoaderPlugin } from 'vue-loader';
+import { join } from 'path';
+import { existsSync } from 'fs';
+import { consola } from '../common/logger';
+import { WebpackConfig } from '../common/types';
 import {
+  CWD,
   CACHE_DIR,
   STYLE_EXTS,
   SCRIPT_EXTS,
@@ -28,7 +33,36 @@ const CSS_LOADERS = [
   },
 ];
 
-export const baseConfig = {
+const plugins = [
+  new VueLoaderPlugin(),
+  new FriendlyErrorsPlugin({
+    clearConsole: false,
+    logLevel: 'WARNING',
+  }),
+];
+
+const tsconfigPath = join(CWD, 'tsconfig.json');
+if (existsSync(tsconfigPath)) {
+  const ForkTsCheckerPlugin = require('fork-ts-checker-webpack-plugin');
+  plugins.push(
+    new ForkTsCheckerPlugin({
+      formatter: 'codeframe',
+      vue: { enabled: true },
+      logger: {
+        // skip info message
+        info() {},
+        warn(message: string) {
+          consola.warn(message);
+        },
+        error(message: string) {
+          consola.error(message);
+        },
+      },
+    })
+  );
+}
+
+export const baseConfig: WebpackConfig = {
   mode: 'development',
   resolve: {
     extensions: [...SCRIPT_EXTS, ...STYLE_EXTS],
@@ -83,11 +117,5 @@ export const baseConfig = {
       },
     ],
   },
-  plugins: [
-    new VueLoaderPlugin(),
-    new FriendlyErrorsPlugin({
-      clearConsole: false,
-      logLevel: 'WARNING',
-    }),
-  ],
+  plugins,
 };

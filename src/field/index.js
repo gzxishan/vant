@@ -1,14 +1,14 @@
 // Utils
-import { formatNumber } from './utils';
-import { preventDefault } from '../utils/dom/event';
 import { resetScroll } from '../utils/dom/reset-scroll';
+import { formatNumber } from '../utils/format/number';
+import { preventDefault } from '../utils/dom/event';
 import {
-  createNamespace,
-  isObject,
   isDef,
   addUnit,
+  isObject,
   isPromise,
   isFunction,
+  createNamespace,
 } from '../utils';
 
 // Components
@@ -37,9 +37,14 @@ export default createComponent({
     ...cellProps,
     name: String,
     rules: Array,
-    error: Boolean,
-    disabled: Boolean,
-    readonly: Boolean,
+    disabled: {
+      type: Boolean,
+      default: null,
+    },
+    readonly: {
+      type: Boolean,
+      default: null,
+    },
     autosize: [Boolean, Object],
     leftIcon: String,
     rightIcon: String,
@@ -54,21 +59,43 @@ export default createComponent({
     errorMessage: String,
     errorMessageAlign: String,
     showWordLimit: Boolean,
+    value: {
+      type: [Number, String],
+      default: '',
+    },
     type: {
       type: String,
       default: 'text',
+    },
+    error: {
+      type: Boolean,
+      default: null,
+    },
+    colon: {
+      type: Boolean,
+      default: null,
+    },
+    clearTrigger: {
+      type: String,
+      default: 'focus',
+    },
+    formatTrigger: {
+      type: String,
+      default: 'onChange',
     },
   },
 
   data() {
     return {
       focused: false,
+      validateFailed: false,
       validateMessage: '',
     };
   },
 
   watch: {
     value() {
+      this.updateValue(this.value);
       this.resetValidation();
       this.validateWithTrigger('onChange');
       this.$nextTick(this.adjustSize);
@@ -76,7 +103,7 @@ export default createComponent({
   },
 
   mounted() {
-    this.format();
+    this.updateValue(this.value, this.formatTrigger);
     this.$nextTick(this.adjustSize);
 
     if (this.vanForm) {
@@ -92,34 +119,36 @@ export default createComponent({
 
   computed: {
     showClear() {
-      return (
-        this.clearable &&
-        this.focused &&
-        this.value !== '' &&
-        isDef(this.value) &&
-        !this.readonly
-      );
+      const readonly = this.getProp('readonly');
+
+      if (this.clearable && !readonly) {
+        const hasValue = isDef(this.value) && this.value !== '';
+        const trigger =
+          this.clearTrigger === 'always' ||
+          (this.clearTrigger === 'focus' && this.focused);
+
+        return hasValue && trigger;
+      }
     },
 
     showError() {
-      if (this.vanForm && this.vanForm.showError && this.validateMessage) {
+      if (this.error !== null) {
+        return this.error;
+      }
+      if (this.vanForm && this.vanForm.showError && this.validateFailed) {
         return true;
       }
-      return this.error;
     },
 
     listeners() {
-      const listeners = {
+      return {
         ...this.$listeners,
-        input: this.onInput,
-        keypress: this.onKeypress,
-        focus: this.onFocus,
         blur: this.onBlur,
+        focus: this.onFocus,
+        input: this.onInput,
+        click: this.onClickInput,
+        keypress: this.onKeypress,
       };
-
-      delete listeners.click;
-
-      return listeners;
     },
 
     labelStyle() {
@@ -169,7 +198,9 @@ export default createComponent({
       if (Array.isArray(value)) {
         return !value.length;
       }
-
+      if (value === 0) {
+        return false;
+      }
       return !value;
     },
 
@@ -197,7 +228,7 @@ export default createComponent({
       return rules.reduce(
         (promise, rule) =>
           promise.then(() => {
-            if (this.validateMessage) {
+            if (this.validateFailed) {
               return;
             }
 
@@ -208,6 +239,7 @@ export default createComponent({
             }
 
             if (!this.runSyncRule(value, rule)) {
+              this.validateFailed = true;
               this.validateMessage = this.getRuleMessage(value, rule);
               return;
             }
@@ -215,6 +247,7 @@ export default createComponent({
             if (rule.validator) {
               return this.runValidator(value, rule).then((result) => {
                 if (result === false) {
+                  this.validateFailed = true;
                   this.validateMessage = this.getRuleMessage(value, rule);
                 }
               });
@@ -230,8 +263,9 @@ export default createComponent({
           resolve();
         }
 
+        this.resetValidation();
         this.runRules(rules).then(() => {
-          if (this.validateMessage) {
+          if (this.validateFailed) {
             resolve({
               name: this.name,
               message: this.validateMessage,
@@ -259,47 +293,43 @@ export default createComponent({
     },
 
     resetValidation() {
-      if (this.validateMessage) {
+      if (this.validateFailed) {
+        this.validateFailed = false;
         this.validateMessage = '';
       }
     },
 
-    format(target = this.$refs.input) {
-      if (!target) {
-        return;
-      }
+    updateValue(value, trigger = 'onChange') {
+      value = isDef(value) ? String(value) : '';
 
-      let { value } = target;
+      // native maxlength have incorrect line-break counting
+      // see: https://github.com/youzan/vant/issues/5033
       const { maxlength } = this;
-
-      // native maxlength not work when type is number
       if (isDef(maxlength) && value.length > maxlength) {
-        value = value.slice(0, maxlength);
-        target.value = value;
+        if (this.value && this.value.length === +maxlength) {
+          ({ value } = this);
+        } else {
+          value = value.slice(0, maxlength);
+        }
       }
 
       if (this.type === 'number' || this.type === 'digit') {
-        const originValue = value;
-        const allowDot = this.type === 'number';
-
-        value = formatNumber(value, allowDot);
-
-        if (value !== originValue) {
-          target.value = value;
-        }
+        const isNumber = this.type === 'number';
+        value = formatNumber(value, isNumber, isNumber);
       }
 
-      if (this.formatter) {
-        const originValue = value;
-
+      if (this.formatter && trigger === this.formatTrigger) {
         value = this.formatter(value);
-
-        if (value !== originValue) {
-          target.value = value;
-        }
       }
 
-      return value;
+      const { input } = this.$refs;
+      if (input && value !== input.value) {
+        input.value = value;
+      }
+
+      if (value !== this.value) {
+        this.$emit('input', value);
+      }
     },
 
     onInput(event) {
@@ -308,7 +338,7 @@ export default createComponent({
         return;
       }
 
-      this.$emit('input', this.format(event.target));
+      this.updateValue(event.target.value);
     },
 
     onFocus(event) {
@@ -317,13 +347,15 @@ export default createComponent({
 
       // readonly not work in lagacy mobile safari
       /* istanbul ignore if */
-      if (this.readonly) {
+      const readonly = this.getProp('readonly');
+      if (readonly) {
         this.blur();
       }
     },
 
     onBlur(event) {
       this.focused = false;
+      this.updateValue(this.value, 'onBlur');
       this.$emit('blur', event);
       this.validateWithTrigger('onBlur');
       resetScroll();
@@ -331,6 +363,10 @@ export default createComponent({
 
     onClick(event) {
       this.$emit('click', event);
+    },
+
+    onClickInput(event) {
+      this.$emit('click-input', event);
     },
 
     onClickLeftIcon(event) {
@@ -348,10 +384,18 @@ export default createComponent({
     },
 
     onKeypress(event) {
-      // trigger blur after click keyboard search button
-      /* istanbul ignore next */
-      if (this.type === 'search' && event.keyCode === 13) {
-        this.blur();
+      const ENTER_CODE = 13;
+
+      if (event.keyCode === ENTER_CODE) {
+        const submitOnEnter = this.getProp('submitOnEnter');
+        if (!submitOnEnter && this.type !== 'textarea') {
+          preventDefault(event);
+        }
+
+        // trigger blur after click keyboard search button
+        if (this.type === 'search') {
+          this.blur();
+        }
       }
 
       this.$emit('keypress', event);
@@ -383,12 +427,19 @@ export default createComponent({
 
     genInput() {
       const { type } = this;
+      const disabled = this.getProp('disabled');
+      const readonly = this.getProp('readonly');
       const inputSlot = this.slots('input');
       const inputAlign = this.getProp('inputAlign');
 
       if (inputSlot) {
         return (
-          <div class={bem('control', [inputAlign, 'custom'])}>{inputSlot}</div>
+          <div
+            class={bem('control', [inputAlign, 'custom'])}
+            onClick={this.onClickInput}
+          >
+            {inputSlot}
+          </div>
         );
       }
 
@@ -401,8 +452,8 @@ export default createComponent({
         attrs: {
           ...this.$attrs,
           name: this.name,
-          disabled: this.disabled,
-          readonly: this.readonly,
+          disabled,
+          readonly,
           placeholder: this.placeholder,
         },
         on: this.listeners,
@@ -468,13 +519,11 @@ export default createComponent({
 
     genWordLimit() {
       if (this.showWordLimit && this.maxlength) {
-        const count = this.value.length;
-        const full = count >= this.maxlength;
+        const count = (this.value || '').length;
 
         return (
           <div class={bem('word-limit')}>
-            <span class={bem('word-num', { full })}>{count}</span>/
-            {this.maxlength}
+            <span class={bem('word-num')}>{count}</span>/{this.maxlength}
           </div>
         );
       }
@@ -521,6 +570,7 @@ export default createComponent({
 
   render() {
     const { slots } = this;
+    const disabled = this.getProp('disabled');
     const labelAlign = this.getProp('labelAlign');
 
     const scopedSlots = {
@@ -530,6 +580,11 @@ export default createComponent({
     const Label = this.genLabel();
     if (Label) {
       scopedSlots.title = () => Label;
+    }
+
+    const extra = this.slots('extra');
+    if (extra) {
+      scopedSlots.extra = () => extra;
     }
 
     return (
@@ -548,6 +603,7 @@ export default createComponent({
         arrowDirection={this.arrowDirection}
         class={bem({
           error: this.showError,
+          disabled,
           [`label-${labelAlign}`]: labelAlign,
           'min-height': this.type === 'textarea' && !this.autosize,
         })}

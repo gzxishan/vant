@@ -1,4 +1,4 @@
-import { createNamespace } from '../utils';
+import { createNamespace, isDef } from '../utils';
 import Info from '../info';
 
 const [createComponent, bem] = createNamespace('tab');
@@ -11,12 +11,10 @@ export default createComponent({
     color: String,
     title: String,
     isActive: Boolean,
-    ellipsis: Boolean,
     disabled: Boolean,
     scrollable: Boolean,
     activeColor: String,
     inactiveColor: String,
-    swipeThreshold: [Number, String],
   },
 
   computed: {
@@ -43,10 +41,6 @@ export default createComponent({
         style.color = titleColor;
       }
 
-      if (this.scrollable && this.ellipsis) {
-        style.flexBasis = `${88 / this.swipeThreshold}%`;
-      }
-
       return style;
     },
   },
@@ -54,6 +48,25 @@ export default createComponent({
   methods: {
     onClick() {
       this.$emit('click');
+    },
+
+    genText() {
+      const Text = (
+        <span class={bem('text', { ellipsis: !this.scrollable })}>
+          {this.slots() || this.title}
+        </span>
+      );
+
+      if (this.dot || (isDef(this.info) && this.info !== '')) {
+        return (
+          <span class={bem('text-wrapper')}>
+            {Text}
+            {<Info dot={this.dot} info={this.info} />}
+          </span>
+        );
+      }
+
+      return Text;
     },
   },
 
@@ -66,19 +79,12 @@ export default createComponent({
           bem({
             active: this.isActive,
             disabled: this.disabled,
-            complete: !this.ellipsis,
           }),
-          {
-            'van-ellipsis': this.ellipsis,
-          },
         ]}
         style={this.style}
         onClick={this.onClick}
       >
-        <span class={bem('text')}>
-          {this.slots() || this.title}
-          <Info dot={this.dot} info={this.info} />
-        </span>
+        {this.genText()}
       </div>
     );
   },

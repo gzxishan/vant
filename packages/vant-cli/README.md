@@ -35,6 +35,7 @@ yarn add @vant/cli --dev
     "dev": "vant-cli dev",
     "test": "vant-cli test",
     "lint": "vant-cli lint",
+    "build": "vant-cli build",
     "release": "vant-cli release",
     "build-site": "vant-cli build-site"
   },
@@ -45,8 +46,8 @@ yarn add @vant/cli --dev
     }
   },
   "lint-staged": {
-    "*.{ts,tsx,js,jsx,vue}": ["eslint", "git add"],
-    "*.{vue,css,less,scss}": ["stylelint", "git add"]
+    "*.{js,jsx,ts,tsx,vue}": "eslint --fix",
+    "*.{vue,css,less,scss}": "stylelint --fix"
   },
   "eslintConfig": {
     "root": true,
@@ -68,12 +69,6 @@ yarn add @vant/cli --dev
 - [配置指南](https://github.com/youzan/vant/tree/dev/packages/vant-cli/docs/config.md)
 - [目录结构](https://github.com/youzan/vant/tree/dev/packages/vant-cli/docs/directory.md)
 - [更新日志](https://github.com/youzan/vant/tree/dev/packages/vant-cli/changelog.md)
-
-## 微信讨论群
-
-扫码加入 Vant Cli 交流群，若群二维码过期，可以联系有赞前端小秘书加群
-
-<img src="https://img.yzcdn.cn/vant/wechat_20200413.jpg" width="220" height="285" >
 
 ## 关于桌面端组件
 

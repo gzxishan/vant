@@ -18,41 +18,13 @@ Vue.use(Picker);
 ### Basic Usage
 
 ```html
-<van-picker :columns="columns" @change="onChange" />
-```
-
-```js
-import { Toast } from 'vant';
-
-export default {
-  data() {
-    return {
-      columns: ['Delaware', 'Florida', 'Georqia', 'Indiana', 'Maine'],
-    };
-  },
-  methods: {
-    onChange(picker, value, index) {
-      Toast(`Value: ${value}, Index: ${index}`);
-    },
-  },
-};
-```
-
-### Default Index
-
-```html
-<van-picker :columns="columns" :default-index="2" @change="onChange" />
-```
-
-### Show Toolbar
-
-```html
 <van-picker
   show-toolbar
   title="Title"
   :columns="columns"
-  @cancel="onCancel"
   @confirm="onConfirm"
+  @cancel="onCancel"
+  @change="onChange"
 />
 ```
 
@@ -69,11 +41,20 @@ export default {
     onConfirm(value, index) {
       Toast(`Value: ${value}, Index: ${index}`);
     },
+    onChange(picker, value, index) {
+      Toast(`Value: ${value}, Index: ${index}`);
+    },
     onCancel() {
       Toast('Cancel');
     },
   },
 };
+```
+
+### Default Index
+
+```html
+<van-picker show-toolbar title="Title" :columns="columns" :default-index="2" />
 ```
 
 ### Multiple Columns
@@ -147,7 +128,7 @@ export default {
 ### Disable option
 
 ```html
-<van-picker :columns="columns" />
+<van-picker show-toolbar :columns="columns" />
 ```
 
 ```js
@@ -167,7 +148,7 @@ export default {
 ### Set Column Values
 
 ```html
-<van-picker :columns="columns" @change="onChange" />
+<van-picker show-toolbar title="Title" :columns="columns" @change="onChange" />
 ```
 
 ```js
@@ -192,10 +173,10 @@ export default {
 
 ### Loading
 
-When Picker columns data is acquired asynchronously, use `loading` prop to show loading prompt
+When Picker columns data is acquired asynchronously, use `loading` prop to show loading prompt.
 
 ```html
-<van-picker :columns="columns" :loading="loading" />
+<van-picker show-toolbar title="Title" :columns="columns" :loading="loading" />
 ```
 
 ```js
@@ -226,8 +207,9 @@ export default {
   placeholder="Choose City"
   @click="showPicker = true"
 />
-<van-popup v-model="showPicker" position="bottom">
+<van-popup v-model="showPicker" round position="bottom">
   <van-picker
+    title="Title"
     show-toolbar
     :columns="columns"
     @cancel="showPicker = false"
@@ -267,12 +249,13 @@ export default {
 | value-key | Key of option text | _string_ | `text` |
 | toolbar-position | Toolbar position, cat be set to `bottom` | _string_ | `top` |
 | loading | Whether to show loading prompt | _boolean_ | `false` |
+| readonly `v2.10.5` | Whether to be readonly | _boolean_ | `false` |
 | show-toolbar | Whether to show toolbar | _boolean_ | `false` |
-| allow-html `v2.1.8` | Whether to allow HTML in option text | _boolean_ | `true` |
+| allow-html | Whether to allow HTML in option text | _boolean_ | `true` |
 | default-index | Default value index of single column picker | _number \| string_ | `0` |
-| item-height | Option height | _number \| string_ | `44` |
-| visible-item-count | Count of visible columns | _number \| string_ | `5` |
-| swipe-duration `v2.2.10` | Duration of the momentum animation，unit `ms` | _number \| string_ | `1000` |
+| item-height `v2.8.6` | Option height, supports `px` `vw` `vh` `rem` unit, default `px` | _number \| string_ | `44` |
+| visible-item-count | Count of visible columns | _number \| string_ | `6` |
+| swipe-duration | Duration of the momentum animation，unit `ms` | _number \| string_ | `1000` |
 
 ### Events
 
@@ -280,18 +263,21 @@ Picker events will pass different parameters according to the columns are single
 
 | Event | Description | Arguments |
 | --- | --- | --- |
-| confirm | Triggered when click confirm button | Single column：current value，current index<br>Multiple columns：current values，current indexes |
-| cancel | Triggered when click cancel button | Single column：current value，current index<br>Multiple columns：current values，current indexes |
-| change | Triggered when current option changed | Single column：Picker instance, current value，current index<br>Multiple columns：Picker instance, current values，column index |
+| confirm | Emitted when click confirm button | Single column：current value，current index<br>Multiple columns：current values，current indexes |
+| cancel | Emitted when click cancel button | Single column：current value，current index<br>Multiple columns：current values，current indexes |
+| change | Emitted when current option changed | Single column：Picker instance, current value，current index<br>Multiple columns：Picker instance, current values，column index |
 
 ### Slots
 
-| Name           | Description                  |
-| -------------- | ---------------------------- |
-| default        | Custom toolbar content       |
-| title          | Custom title                 |
-| columns-top    | Custom content above columns |
-| columns-bottom | Custom content below columns |
+| Name | Description | SlotProps |
+| --- | --- | --- |
+| default | Custom toolbar content | - |
+| title | Custom title | - |
+| confirm `v2.10.11` | Custom confirm button text | - |
+| cancel `v2.10.11` | Custom cancel button text | - |
+| option `v2.10.11` | Custom option content | _option: string \| object_ |
+| columns-top | Custom content above columns | - |
+| columns-bottom | Custom content below columns | - |
 
 ### Data Structure of Column
 
@@ -304,7 +290,7 @@ Picker events will pass different parameters according to the columns are single
 
 ### Methods
 
-Use [ref](https://vuejs.org/v2/api/#ref) to get Picker instance and call instance methods
+Use [ref](https://vuejs.org/v2/api/#ref) to get Picker instance and call instance methods.
 
 | Name | Description | Attribute | Return value |
 | --- | --- | --- | --- |
@@ -319,3 +305,23 @@ Use [ref](https://vuejs.org/v2/api/#ref) to get Picker instance and call instanc
 | getColumnValues | Get columns data of the column | columnIndex | values |
 | setColumnValues | Set columns data of the column | columnIndex, values | - |
 | confirm `v2.4.0` | Stop scrolling and emit confirm event | - | - |
+
+### Less Variables
+
+How to use: [Custom Theme](#/en-US/theme).
+
+| Name                            | Default Value              | Description |
+| ------------------------------- | -------------------------- | ----------- |
+| @picker-background-color        | `@white`                   | -           |
+| @picker-toolbar-height          | `44px`                     | -           |
+| @picker-title-font-size         | `@font-size-lg`            | -           |
+| @picker-title-line-height       | `@line-height-md`          | -           |
+| @picker-action-padding          | `0 @padding-md`            | -           |
+| @picker-action-font-size        | `@font-size-md`            | -           |
+| @picker-confirm-action-color    | `@text-link-color`         | -           |
+| @picker-cancel-action-color     | `@gray-6`                  | -           |
+| @picker-option-font-size        | `@font-size-lg`            | -           |
+| @picker-option-text-color       | `@black`                   | -           |
+| @picker-option-disabled-opacity | `0.3`                      | -           |
+| @picker-loading-icon-color      | `@blue`                    | -           |
+| @picker-loading-mask-color      | `rgba(255, 255, 255, 0.9)` | -           |

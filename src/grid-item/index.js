@@ -1,5 +1,5 @@
 // Utils
-import { createNamespace, addUnit, isDef } from '../utils';
+import { createNamespace, addUnit } from '../utils';
 import { BORDER } from '../utils/constant';
 import { route, routeProps } from '../utils/router';
 
@@ -21,6 +21,7 @@ export default createComponent({
     text: String,
     icon: String,
     iconPrefix: String,
+    // @deprecated
     info: [Number, String],
     badge: [Number, String],
   },
@@ -71,7 +72,13 @@ export default createComponent({
 
     genIcon() {
       const iconSlot = this.slots('icon');
-      const info = isDef(this.badge) ? this.badge : this.info;
+      const info = this.badge ?? this.info;
+
+      if (process.env.NODE_ENV === 'development' && this.info) {
+        console.warn(
+          '[Vant] GridItem: "info" prop is deprecated, use "badge" prop instead.'
+        );
+      }
 
       if (iconSlot) {
         return (
@@ -87,7 +94,7 @@ export default createComponent({
           <Icon
             name={this.icon}
             dot={this.dot}
-            info={info}
+            badge={info}
             size={this.parent.iconSize}
             class={bem('icon')}
             classPrefix={this.iconPrefix}
@@ -120,7 +127,14 @@ export default createComponent({
   },
 
   render() {
-    const { center, border, square, gutter, clickable } = this.parent;
+    const {
+      center,
+      border,
+      square,
+      gutter,
+      direction,
+      clickable,
+    } = this.parent;
 
     return (
       <div class={[bem({ square })]} style={this.style}>
@@ -129,12 +143,15 @@ export default createComponent({
           role={clickable ? 'button' : null}
           tabindex={clickable ? 0 : null}
           class={[
-            bem('content', {
-              center,
-              square,
-              clickable,
-              surround: border && gutter,
-            }),
+            bem('content', [
+              direction,
+              {
+                center,
+                square,
+                clickable,
+                surround: border && gutter,
+              },
+            ]),
             { [BORDER]: border },
           ]}
           onClick={this.onClick}

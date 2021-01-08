@@ -8,10 +8,12 @@
 
 ### Features
 
-- 60+ Reusable components
-- 90% Unit test coverage
+- 65+ Reusable components
+- 1kb Component average size (min+gzip)
+- 90%+ Unit test coverage
 - Extensive documentation and demos
-- Support [babel-plugin-import](https://github.com/ant-design/babel-plugin-import)
+- Support Vue 2 & Vue 3
+- Support Tree Shaking
 - Support Custom Theme
 - Support i18n
 - Support TS
@@ -35,6 +37,7 @@ Modern browsers and Android 4.0+, iOS 8.0+.
 | --- | --- |
 | [vant-demo](https://github.com/youzan/vant-demo) | Official vant demo collection |
 | [vant-weapp](https://github.com/youzan/vant-weapp) | WeChat MiniProgram UI |
+| [vant-react](https://github.com/mxdi9i7/vant-react) | Vant React (maintained by the community) |
 | [vant-cli](https://github.com/youzan/vant/tree/dev/packages/vant-cli) | Scaffold for UI library |
 | [vant-icons](https://github.com/youzan/vant/tree/dev/packages/vant-icons) | Vant icons |
 | [vant-touch-emulator](https://github.com/youzan/vant/tree/dev/packages/vant-touch-emulator) | Using vant in desktop browsers |
@@ -43,6 +46,7 @@ Modern browsers and Android 4.0+, iOS 8.0+.
 
 - [Feedback](https://github.com/youzan/vant/issues)
 - [Changelog](#/en-US/changelog)
+- [Gitter](https://gitter.im/vant-contrib/discuss?utm_source=share-link&utm_medium=link&utm_campaign=share-link)
 
 ### LICENSE
 

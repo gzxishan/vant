@@ -2,7 +2,15 @@
 
 ### 废弃提示
 
-<b>SwitchCell 组件将在 3.0 版本中废弃</b>，请直接使用 Cell 和 Switch 组件代替
+<b>SwitchCell 组件将在 3.0 版本中废弃</b>，请直接使用 Cell 和 Switch 组件代替，替换写法如下：
+
+```html
+<van-cell center title="标题">
+  <template #right-icon>
+    <van-switch v-model="checked" size="24" />
+  </template>
+</van-cell>
+```
 
 ### 引入
 
@@ -35,7 +43,7 @@ export default {
 
 ### 禁用状态
 
-通过`disabled`属性可以将组件设置为禁用状态
+通过 `disabled` 属性可以将组件设置为禁用状态。
 
 ```html
 <van-cell-group>
@@ -45,7 +53,7 @@ export default {
 
 ### 加载状态
 
-通过`loading`属性可以将组件设置为加载状态
+通过 `loading` 属性可以将组件设置为加载状态。
 
 ```html
 <van-cell-group>

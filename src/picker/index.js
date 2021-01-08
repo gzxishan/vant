@@ -1,8 +1,9 @@
 // Utils
 import { createNamespace } from '../utils';
 import { preventDefault } from '../utils/dom/event';
-import { BORDER_TOP_BOTTOM, BORDER_UNSET_TOP_BOTTOM } from '../utils/constant';
-import { pickerProps } from './shared';
+import { BORDER_UNSET_TOP_BOTTOM } from '../utils/constant';
+import { pickerProps, DEFAULT_ITEM_HEIGHT } from './shared';
+import { unitToPx } from '../utils/format/unit';
 
 // Components
 import Loading from '../loading';
@@ -39,6 +40,10 @@ export default createComponent({
   },
 
   computed: {
+    itemPxHeight() {
+      return this.itemHeight ? unitToPx(this.itemHeight) : DEFAULT_ITEM_HEIGHT;
+    },
+
     dataType() {
       const { columns } = this;
       const firstColumn = columns[0] || {};
@@ -81,15 +86,25 @@ export default createComponent({
       let cursor = { children: this.columns };
 
       while (cursor && cursor.children) {
-        const defaultIndex = cursor.defaultIndex || +this.defaultIndex;
+        const { children } = cursor;
+        let defaultIndex = cursor.defaultIndex ?? +this.defaultIndex;
+
+        while (children[defaultIndex] && children[defaultIndex].disabled) {
+          if (defaultIndex < children.length - 1) {
+            defaultIndex++;
+          } else {
+            defaultIndex = 0;
+            break;
+          }
+        }
 
         formatted.push({
-          values: cursor.children.map((item) => item[this.valueKey]),
+          values: cursor.children,
           className: cursor.className,
           defaultIndex,
         });
 
-        cursor = cursor.children[defaultIndex];
+        cursor = children[defaultIndex];
       }
 
       this.formattedColumns = formatted;
@@ -99,7 +114,16 @@ export default createComponent({
       if (this.dataType === 'text') {
         this.$emit(event, this.getColumnValue(0), this.getColumnIndex(0));
       } else {
-        this.$emit(event, this.getValues(), this.getIndexes());
+        let values = this.getValues();
+
+        // compatible with old version of wrong parameters
+        // should be removed in next major version
+        // see: https://github.com/youzan/vant/issues/5905
+        if (this.dataType === 'cascade') {
+          values = values.map((item) => item[this.valueKey]);
+        }
+
+        this.$emit(event, values, this.getIndexes());
       }
     },
 
@@ -111,14 +135,9 @@ export default createComponent({
         cursor = cursor.children[indexes[i]];
       }
 
-      while (cursor.children) {
+      while (cursor && cursor.children) {
         columnIndex++;
-
-        this.setColumnValues(
-          columnIndex,
-          cursor.children.map((item) => item[this.valueKey])
-        );
-
+        this.setColumnValues(columnIndex, cursor.children);
         cursor = cursor.children[cursor.defaultIndex || 0];
       }
     },
@@ -136,7 +155,16 @@ export default createComponent({
           this.getColumnIndex(0)
         );
       } else {
-        this.$emit('change', this, this.getValues(), columnIndex);
+        let values = this.getValues();
+
+        // compatible with old version of wrong parameters
+        // should be removed in next major version
+        // see: https://github.com/youzan/vant/issues/5905
+        if (this.dataType === 'cascade') {
+          values = values.map((item) => item[this.valueKey]);
+        }
+
+        this.$emit('change', this, values, columnIndex);
       }
     },
 
@@ -252,22 +280,30 @@ export default createComponent({
       }
     },
 
+    genCancel() {
+      return (
+        <button type="button" class={bem('cancel')} onClick={this.cancel}>
+          {this.slots('cancel') || this.cancelButtonText || t('cancel')}
+        </button>
+      );
+    },
+
+    genConfirm() {
+      return (
+        <button type="button" class={bem('confirm')} onClick={this.confirm}>
+          {this.slots('confirm') || this.confirmButtonText || t('confirm')}
+        </button>
+      );
+    },
+
     genToolbar() {
       if (this.showToolbar) {
         return (
-          <div class={[BORDER_TOP_BOTTOM, bem('toolbar')]}>
+          <div class={bem('toolbar')}>
             {this.slots() || [
-              <button type="button" class={bem('cancel')} onClick={this.cancel}>
-                {this.cancelButtonText || t('cancel')}
-              </button>,
+              this.genCancel(),
               this.genTitle(),
-              <button
-                type="button"
-                class={bem('confirm')}
-                onClick={this.confirm}
-              >
-                {this.confirmButtonText || t('confirm')}
-              </button>,
+              this.genConfirm(),
             ]}
           </div>
         );
@@ -275,16 +311,46 @@ export default createComponent({
     },
 
     genColumns() {
+      const { itemPxHeight } = this;
+      const wrapHeight = itemPxHeight * this.visibleItemCount;
+
+      const frameStyle = { height: `${itemPxHeight}px` };
+      const columnsStyle = { height: `${wrapHeight}px` };
+      const maskStyle = {
+        backgroundSize: `100% ${(wrapHeight - itemPxHeight) / 2}px`,
+      };
+
+      return (
+        <div
+          class={bem('columns')}
+          style={columnsStyle}
+          onTouchmove={preventDefault}
+        >
+          {this.genColumnItems()}
+          <div class={bem('mask')} style={maskStyle} />
+          <div
+            class={[BORDER_UNSET_TOP_BOTTOM, bem('frame')]}
+            style={frameStyle}
+          />
+        </div>
+      );
+    },
+
+    genColumnItems() {
       return this.formattedColumns.map((item, columnIndex) => (
         <PickerColumn
+          readonly={this.readonly}
           valueKey={this.valueKey}
           allowHtml={this.allowHtml}
           className={item.className}
-          itemHeight={this.itemHeight}
-          defaultIndex={item.defaultIndex || +this.defaultIndex}
+          itemHeight={this.itemPxHeight}
+          defaultIndex={item.defaultIndex ?? +this.defaultIndex}
           swipeDuration={this.swipeDuration}
           visibleItemCount={this.visibleItemCount}
           initialOptions={item.values}
+          scopedSlots={{
+            option: this.$scopedSlots.option,
+          }}
           onChange={() => {
             this.onChange(columnIndex);
           }}
@@ -294,38 +360,12 @@ export default createComponent({
   },
 
   render(h) {
-    const itemHeight = +this.itemHeight;
-    const wrapHeight = itemHeight * this.visibleItemCount;
-
-    const frameStyle = {
-      height: `${itemHeight}px`,
-    };
-
-    const columnsStyle = {
-      height: `${wrapHeight}px`,
-    };
-
-    const maskStyle = {
-      backgroundSize: `100% ${(wrapHeight - itemHeight) / 2}px`,
-    };
-
     return (
       <div class={bem()}>
         {this.toolbarPosition === 'top' ? this.genToolbar() : h()}
         {this.loading ? <Loading class={bem('loading')} /> : h()}
         {this.slots('columns-top')}
-        <div
-          class={bem('columns')}
-          style={columnsStyle}
-          onTouchmove={preventDefault}
-        >
-          {this.genColumns()}
-          <div class={bem('mask')} style={maskStyle} />
-          <div
-            class={[BORDER_UNSET_TOP_BOTTOM, bem('frame')]}
-            style={frameStyle}
-          />
-        </div>
+        {this.genColumns()}
         {this.slots('columns-bottom')}
         {this.toolbarPosition === 'bottom' ? this.genToolbar() : h()}
       </div>

@@ -31,9 +31,10 @@ export default createComponent({
 
   props: {
     valueKey: String,
+    readonly: Boolean,
     allowHtml: Boolean,
     className: String,
-    itemHeight: [Number, String],
+    itemHeight: Number,
     defaultIndex: Number,
     swipeDuration: [Number, String],
     visibleItemCount: [Number, String],
@@ -99,6 +100,10 @@ export default createComponent({
     },
 
     onTouchStart(event) {
+      if (this.readonly) {
+        return;
+      }
+
       this.touchStart(event);
 
       if (this.moving) {
@@ -116,6 +121,10 @@ export default createComponent({
     },
 
     onTouchMove(event) {
+      if (this.readonly) {
+        return;
+      }
+
       this.touchMove(event);
 
       if (this.direction === 'vertical') {
@@ -137,6 +146,10 @@ export default createComponent({
     },
 
     onTouchEnd() {
+      if (this.readonly) {
+        return;
+      }
+
       const distance = this.offset - this.momentumOffset;
       const duration = Date.now() - this.touchStartTime;
       const allowMomentum =
@@ -153,7 +166,7 @@ export default createComponent({
       this.setIndex(index, true);
 
       // compatible with desktop scenario
-      // use setTimeout to skip the click event triggered after touchstart
+      // use setTimeout to skip the click event Emitted after touchstart
       setTimeout(() => {
         this.moving = false;
       }, 0);
@@ -164,10 +177,11 @@ export default createComponent({
     },
 
     onClickItem(index) {
-      if (this.moving) {
+      if (this.moving || this.readonly) {
         return;
       }
 
+      this.transitionEndTrigger = null;
       this.duration = DEFAULT_DURATION;
       this.setIndex(index, true);
     },
@@ -270,7 +284,6 @@ export default createComponent({
             tabindex: disabled ? -1 : 0,
           },
           class: [
-            'van-ellipsis',
             bem('item', {
               disabled,
               selected: index === this.currentIndex,
@@ -283,13 +296,18 @@ export default createComponent({
           },
         };
 
-        if (this.allowHtml) {
-          data.domProps = {
-            innerHTML: text,
-          };
-        }
+        const childData = {
+          class: 'van-ellipsis',
+          domProps: {
+            [this.allowHtml ? 'innerHTML' : 'textContent']: text,
+          },
+        };
 
-        return <li {...data}>{this.allowHtml ? '' : text}</li>;
+        return (
+          <li {...data}>
+            {this.slots('option', option) || <div {...childData} />}
+          </li>
+        );
       });
     },
   },
@@ -299,7 +317,6 @@ export default createComponent({
       transform: `translate3d(0, ${this.offset + this.baseOffset}px, 0)`,
       transitionDuration: `${this.duration}ms`,
       transitionProperty: this.duration ? 'all' : 'none',
-      lineHeight: `${this.itemHeight}px`,
     };
 
     return (

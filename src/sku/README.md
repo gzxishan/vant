@@ -24,7 +24,6 @@ Vue.use(Sku);
   :quota-used="quotaUsed"
   :reset-stepper-on-hide="resetStepperOnHide"
   :reset-selected-sku-on-hide="resetSelectedSkuOnHide"
-  :close-on-click-overlay="closeOnClickOverlay"
   :disable-stepper-input="disableStepperInput"
   :message-config="messageConfig"
   @buy-clicked="onBuyClicked"
@@ -45,7 +44,7 @@ export default {
 };
 ```
 
-### Custom Stepper Config
+### Custom Stepper
 
 ```html
 <van-sku
@@ -62,7 +61,7 @@ export default {
 />
 ```
 
-### Advanced Usage
+### Custom By Slot
 
 ```html
 <van-sku
@@ -131,31 +130,35 @@ export default {
 | reset-stepper-on-hide | Whether to reset stepper when hide | _boolean_ | `false` |
 | reset-selected-sku-on-hide | Whether to reset selected sku when hide | _boolean_ | `false` |
 | disable-stepper-input | Whether to disable stepper input | _boolean_ | `false` |
-| close-on-click-overlay | Whether to close sku popup when click overlay | _boolean_ | `false` |
+| close-on-click-overlay | Whether to close sku popup when overlay is clicked | _boolean_ | `true` |
 | stepper-title | Quantity title | _string_ | `Quantity` |
 | custom-stepper-config | Custom stepper related config | _object_ | `{}` |
 | message-config | Message related config | _object_ | `{}` |
+| disable-soldout-sku `v2.11.3` | Whether to disable soldout sku | _boolean_ | `true` |
 | get-container | Return the mount node for sku | _string \| () => Element_ | - |
-| safe-area-inset-bottom `v2.2.1` | Whether to enable bottom safe area adaptation | _boolean_ | `true` |
+| safe-area-inset-bottom | Whether to enable bottom safe area adaptation | _boolean_ | `true` |
 | start-sale-num `v2.3.0` | Minimum quantity | _number_ | `1` |
 | properties `v2.4.2` | Goods properties | _array_ | - |
 | preview-on-click-image `v2.5.2` | Whether to preview image when click goods image | _boolean_ | `true` |
+| show-header-image `v2.9.0` | Whether to display header image | _boolean_ | `true` |
+| lazy-load | Whether to enable lazy load，should register [Lazyload](#/en-US/lazyload) component | _boolean_ | `false` |
 
 ### Events
 
 | Event | Description | Arguments |
 | --- | --- | --- |
-| add-cart | Triggered when click cart button | data: object |
-| buy-clicked | Triggered when click buy button | data: object |
-| stepper-change | Triggered when stepper value changed | value: number |
-| sku-selected | Triggered when select sku | { skuValue, selectedSku, selectedSkuComb } |
-| sku-prop-selected | Triggered when select property | { propValue, selectedProp, selectedSkuComb } |
-| open-preview | Triggered when open image preview | data: object |
-| close-preview | Triggered when close image preview | data: object |
+| add-cart | Emitted when click cart button | data: object |
+| buy-clicked | Emitted when click buy button | data: object |
+| stepper-change | Emitted when stepper value changed | value: number |
+| sku-selected | Emitted when select sku | { skuValue, selectedSku, selectedSkuComb } |
+| sku-prop-selected | Emitted when select property | { propValue, selectedProp, selectedSkuComb } |
+| open-preview | Emitted when open image preview | data: object |
+| close-preview | Emitted when close image preview | data: object |
+| sku-reset `v2.8.1` | Emitted when reset sku and property | { selectedSku, selectedProp, selectedSkuComb } |
 
 ### Methods
 
-Use [ref](https://vuejs.org/v2/api/#ref) to get Sku instance and call instance methods
+Use [ref](https://vuejs.org/v2/api/#ref) to get Sku instance and call instance methods.
 
 | Name | Description | Attribute | Return value |
 | --- | --- | --- | --- |
@@ -186,30 +189,30 @@ sku: {
   tree: [
     {
       k: 'Color',
+      k_s: 's1',
       v: [
         {
-          id: '30349',
+          id: '1',
           name: 'Red',
           imgUrl: 'https://img.yzcdn.cn/1.jpg',
           previewImgUrl: 'https://img.yzcdn.cn/1p.jpg',
         },
         {
-          id: '1215',
+          id: '1',
           name: 'Blue',
           imgUrl: 'https://img.yzcdn.cn/2.jpg',
           previewImgUrl: 'https://img.yzcdn.cn/2p.jpg',
         }
       ],
-      k_s: 's1'
+      largeImageMode: true, //  whether to enable large image mode
     }
   ],
   list: [
     {
       id: 2259,
+      s1: '1',
+      s2: '1',
       price: 100,
-      s1: '1215',
-      s2: '1193',
-      s3: '0',
       stock_num: 110
     }
   ],
@@ -393,3 +396,13 @@ skuData: {
   }
 }
 ```
+
+### Less Variables
+
+How to use: [Custom Theme](#/en-US/theme).
+
+| Name                       | Default Value           | Description |
+| -------------------------- | ----------------------- | ----------- |
+| @sku-item-background-color | `@background-color`     | -           |
+| @sku-icon-gray-color       | `@gray-4`               | -           |
+| @sku-upload-mask-color     | `rgba(50, 50, 51, 0.8)` | -           |

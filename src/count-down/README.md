@@ -43,22 +43,28 @@ export default {
 
 ```html
 <van-count-down :time="time">
-  <template v-slot="timeData">
-    <span class="item">{{ timeData.hours }}</span>
-    <span class="item">{{ timeData.minutes }}</span>
-    <span class="item">{{ timeData.seconds }}</span>
+  <template #default="timeData">
+    <span class="block">{{ timeData.hours }}</span>
+    <span class="colon">:</span>
+    <span class="block">{{ timeData.minutes }}</span>
+    <span class="colon">:</span>
+    <span class="block">{{ timeData.seconds }}</span>
   </template>
 </van-count-down>
 
 <style>
-  .item {
+  .colon {
+    display: inline-block;
+    margin: 0 4px;
+    color: #ee0a24;
+  }
+  .block {
     display: inline-block;
     width: 22px;
-    margin-right: 5px;
     color: #fff;
     font-size: 12px;
     text-align: center;
-    background-color: #1989fa;
+    background-color: #ee0a24;
   }
 </style>
 ```
@@ -127,10 +133,10 @@ export default {
 
 ### Events
 
-| Event           | Description                        | Arguments            |
-| --------------- | ---------------------------------- | -------------------- |
-| finish          | Triggered when count down finished | -                    |
-| change `v2.4.4` | Triggered when count down changed  | _timeData: TimeData_ |
+| Event           | Description                      | Arguments            |
+| --------------- | -------------------------------- | -------------------- |
+| finish          | Emitted when count down finished | -                    |
+| change `v2.4.4` | Emitted when count down changed  | _timeData: TimeData_ |
 
 ### Slots
 
@@ -150,10 +156,20 @@ export default {
 
 ### Methods
 
-Use [ref](https://vuejs.org/v2/api/#ref) to get CountDown instance and call instance methods
+Use [ref](https://vuejs.org/v2/api/#ref) to get CountDown instance and call instance methods.
 
 | Name  | Description      | Attribute | Return value |
 | ----- | ---------------- | --------- | ------------ |
 | start | Start count down | -         | -            |
 | pause | Pause count down | -         | -            |
 | reset | Reset count down | -         | -            |
+
+### Less Variables
+
+How to use: [Custom Theme](#/en-US/theme).
+
+| Name                    | Default Value     | Description |
+| ----------------------- | ----------------- | ----------- |
+| @count-down-text-color  | `@text-color`     | -           |
+| @count-down-font-size   | `@font-size-md`   | -           |
+| @count-down-line-height | `@line-height-md` | -           |

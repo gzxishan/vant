@@ -14,10 +14,12 @@
 
     <demo-block :title="t('customStyle')">
       <van-count-down :time="time">
-        <template v-slot="currentTime">
-          <span class="item">{{ currentTime.hours }}</span>
-          <span class="item">{{ currentTime.minutes }}</span>
-          <span class="item">{{ currentTime.seconds }}</span>
+        <template #default="currentTime">
+          <span class="block">{{ currentTime.hours }}</span>
+          <span class="colon">:</span>
+          <span class="block">{{ currentTime.minutes }}</span>
+          <span class="colon">:</span>
+          <span class="block">{{ currentTime.seconds }}</span>
         </template>
       </van-count-down>
     </demo-block>
@@ -103,15 +105,20 @@ export default {
     margin-left: @padding-md;
   }
 
-  .item {
+  .colon {
+    display: inline-block;
+    margin: 0 4px;
+    color: @red;
+  }
+
+  .block {
     display: inline-block;
     width: 22px;
-    margin-right: 5px;
     color: #fff;
     font-size: 12px;
     text-align: center;
-    background-color: @blue;
-    border-radius: 2px;
+    background-color: @red;
+    border-radius: 4px;
   }
 
   .van-grid {

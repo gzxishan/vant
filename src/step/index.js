@@ -21,6 +21,22 @@ export default createComponent({
     active() {
       return this.status === 'process';
     },
+
+    lineStyle() {
+      if (this.status === 'finish') {
+        return { background: this.parent.activeColor };
+      }
+      return { background: this.parent.inactiveColor };
+    },
+
+    titleStyle() {
+      if (this.active) {
+        return { color: this.parent.activeColor };
+      }
+      if (!this.status) {
+        return { color: this.parent.inactiveColor };
+      }
+    },
   },
 
   methods: {
@@ -47,7 +63,7 @@ export default createComponent({
         );
       }
 
-      return <i class={bem('circle')} />;
+      return <i class={bem('circle')} style={this.lineStyle} />;
     },
 
     onClickStep() {
@@ -57,16 +73,13 @@ export default createComponent({
 
   render() {
     const { status, active } = this;
-    const { activeColor, direction } = this.parent;
-
-    const titleStyle = active && { color: activeColor };
-    const lineStyle = status === 'finish' && { background: activeColor };
+    const { direction } = this.parent;
 
     return (
       <div class={[BORDER, bem([direction, { [status]: status }])]}>
         <div
           class={bem('title', { active })}
-          style={titleStyle}
+          style={this.titleStyle}
           onClick={this.onClickStep}
         >
           {this.slots()}
@@ -74,7 +87,7 @@ export default createComponent({
         <div class={bem('circle-container')} onClick={this.onClickStep}>
           {this.genCircle()}
         </div>
-        <div class={bem('line')} style={lineStyle} />
+        <div class={bem('line')} style={this.lineStyle} />
       </div>
     );
   },

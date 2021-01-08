@@ -20,7 +20,7 @@ Vue.use(Area);
 To initailize `Area` component, `area-list` property is required. Data structure will be introduced later.
 
 ```html
-<van-area :area-list="areaList" />
+<van-area title="Title" :area-list="areaList" />
 ```
 
 ### Initial Value
@@ -28,7 +28,7 @@ To initailize `Area` component, `area-list` property is required. Data structure
 To have a selected value，simply pass the `code` of target area to `value` property.
 
 ```html
-<van-area :area-list="areaList" value="110101" />
+<van-area title="Title" :area-list="areaList" value="110101" />
 ```
 
 ### Columns Number
@@ -36,7 +36,7 @@ To have a selected value，simply pass the `code` of target area to `value` prop
 `columns-num` property is used to config number of columns to be displayed. This component has 3 columns corresponding to a 3 level picker by default. Set `columns-num` with 2, you'll have a 2 level picker.
 
 ```html
-<van-area :area-list="areaList" :columns-num="2" title="Title" />
+<van-area title="Title" :area-list="areaList" :columns-num="2" />
 ```
 
 ### Columns Placeholder
@@ -45,9 +45,9 @@ To have a selected value，simply pass the `code` of target area to `value` prop
 
 ```html
 <van-area
+  title="Title"
   :area-list="areaList"
   :columns-placeholder="['Choose', 'Choose', 'Choose']"
-  title="Title"
 />
 ```
 
@@ -62,21 +62,22 @@ To have a selected value，simply pass the `code` of target area to `value` prop
 | confirm-button-text | Text of confirm button | _string_ | `Confirm` |
 | cancel-button-text | Text of cancel button | _string_ | `Cancel` |
 | area-list | Area list data | _object_ | - |
-| columns-placeholder `v2.2.5` | Placeholder of columns | _string[]_ | `[]` |
+| columns-placeholder | Placeholder of columns | _string[]_ | `[]` |
 | loading | Whether to show loading prompt | _boolean_ | `false` |
-| item-height | Option height | _number \| string_ | `44` |
+| readonly `v2.10.5` | Whether to be readonly | _boolean_ | `false` |
+| item-height `v2.8.6` | Option height, supports `px` `vw` `vh` `rem` unit, default `px` | _number \| string_ | `44` |
 | columns-num | Level of picker | _number \| string_ | `3` |
-| visible-item-count | Count of visible columns | _number \| string_ | `5` |
-| swipe-duration `v2.2.13` | Duration of the momentum animation，unit `ms` | _number \| string_ | `1000` |
-| is-oversea-code `v2.1.4` | The method to validate oversea code | _() => boolean_ | - |
+| visible-item-count | Count of visible columns | _number \| string_ | `6` |
+| swipe-duration | Duration of the momentum animation，unit `ms` | _number \| string_ | `1000` |
+| is-oversea-code | The method to validate oversea code | _() => boolean_ | - |
 
 ### Events
 
 | Event | Description | Arguments |
 | --- | --- | --- |
-| confirm | triggers when clicking the confirm button | an array |
-| cancel | triggers when clicking the cancel button | - |
-| change | Triggered when current option changed | Picker instance, current values，column index |
+| confirm | Emitted when the confirm button is clicked | selected areas |
+| cancel | Emitted when the cancel button is clicked | - |
+| change | Emitted when current option changed | Picker instance, current values，column index |
 
 ### Slots
 
@@ -88,7 +89,7 @@ To have a selected value，simply pass the `code` of target area to `value` prop
 
 ### Methods
 
-Use [ref](https://vuejs.org/v2/api/#ref) to get Area instance and call instance methods
+Use [ref](https://vuejs.org/v2/api/#ref) to get Area instance and call instance methods.
 
 | Name  | Description               | Attribute     | Return value |
 | ----- | ------------------------- | ------------- | ------------ |

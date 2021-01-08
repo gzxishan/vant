@@ -1,6 +1,6 @@
 {
   "name": "vant",
-  "version": "2.6.1",
+  "version": "2.12.2",
   "description": "Mobile UI Components built on Vue",
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -12,53 +12,51 @@
     "types",
     "vetur"
   ],
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
   "scripts": {
     "bootstrap": "yarn || npm i",
     "dev": "vant-cli dev",
-    "lint": "vant-cli lint && ls-lint",
+    "lint": "vant-cli lint",
     "test": "vant-cli test",
     "build": "vant-cli build",
     "release": "vant-cli release",
     "test:watch": "vant-cli test --watch",
+    "build:site": "vant-cli build-site",
     "release:site": "sh docs/site/release.sh",
     "test:coverage": "open test/coverage/index.html"
   },
   "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged && ls-lint",
+    "hooks.bak": {
+      "pre-commit": "lint-staged",
       "commit-msg": "vant-cli commit-lint"
     }
   },
   "lint-staged": {
-    "*.md": [
-      "prettier --write"
-    ],
-    "*.{ts,tsx,js,vue,less}": [
-      "prettier --write",
-      "git add"
-    ],
-    "*.{ts,tsx,js,vue}": [
-      "eslint --fix",
-      "git add"
-    ],
-    "*.{vue,css,less}": [
-      "stylelint --fix",
-      "git add"
-    ]
+    "*.md": "prettier --write",
+    "*.{ts,tsx,js,vue,less}": "prettier --write",
+    "*.{ts,tsx,js,vue}": "eslint --fix",
+    "*.{vue,css,less}": "stylelint --fix"
   },
   "repository": {
     "type": "git",
     "url": "git@github.com:youzan/vant.git"
   },
   "keywords": [
+    "ui",
     "vue",
-    "component"
+    "frontend",
+    "mobile ui",
+    "component",
+    "components"
   ],
   "author": "youzanfe",
   "license": "MIT",
   "dependencies": {
     "@babel/runtime": "7.x",
-    "@vant/icons": "1.2.1",
+    "@vant/icons": "1.5.0",
+    "@vant/popperjs": "^1.0.0",
     "@vue/babel-helper-vue-jsx-merge-props": "^1.0.0",
     "vue-lazyload": "1.2.3"
   },
@@ -66,11 +64,10 @@
     "vue": ">= 2.5.22"
   },
   "devDependencies": {
-    "@ls-lint/ls-lint": "^1.8.0",
-    "@vant/cli": "^2.4.0",
-    "prettier": "^2.0.4",
-    "vue": "^2.6.11",
-    "vue-template-compiler": "^2.6.11"
+    "@vant/cli": "^2.7.0",
+    "prettier": "2.1.0",
+    "vue": "^2.6.12",
+    "vue-template-compiler": "^2.6.12"
   },
   "sideEffects": [
     "es/**/style/*",

@@ -5,11 +5,11 @@
       <div class="van-multi-ellipsis--l2">{{ t('text2') }}</div>
     </demo-block>
 
-    <demo-block :title="t('hairline')">
+    <demo-block card :title="t('hairline')">
       <div class="van-hairline--top" />
     </demo-block>
 
-    <demo-block :title="t('animation')">
+    <demo-block card :title="t('animation')">
       <van-cell is-link title="Fade" @click="animate('van-fade')" />
       <van-cell is-link title="Slide Up" @click="animate('van-slide-up')" />
       <van-cell is-link title="Slide Down" @click="animate('van-slide-down')" />
@@ -104,7 +104,7 @@ export default {
     height: 100px;
     margin: -50px 0 0 -50px;
     background-color: @blue;
-    border-radius: 3px;
+    border-radius: 8px;
   }
 }
 </style>

@@ -9,12 +9,13 @@ import { DefaultSlots } from '../utils/types';
 export type SkeletonProps = {
   row: number | string;
   title?: boolean;
+  round?: boolean;
   avatar?: boolean;
   loading: boolean;
   animate: boolean;
-  avatarSize: string;
+  titleWidth?: number | string;
+  avatarSize?: number | string;
   avatarShape: 'square' | 'round';
-  titleWidth: number | string;
   rowWidth: number | string | (number | string)[];
 };
 
@@ -78,7 +79,10 @@ function Skeleton(
   }
 
   return (
-    <div class={bem({ animate: props.animate })} {...inherit(ctx)}>
+    <div
+      class={bem({ animate: props.animate, round: props.round })}
+      {...inherit(ctx)}
+    >
       {Avatar()}
       <div class={bem('content')}>
         {Title()}
@@ -90,7 +94,10 @@ function Skeleton(
 
 Skeleton.props = {
   title: Boolean,
+  round: Boolean,
   avatar: Boolean,
+  titleWidth: [Number, String],
+  avatarSize: [Number, String],
   row: {
     type: [Number, String],
     default: 0,
@@ -103,17 +110,9 @@ Skeleton.props = {
     type: Boolean,
     default: true,
   },
-  avatarSize: {
-    type: String,
-    default: '32px',
-  },
   avatarShape: {
     type: String,
     default: 'round',
-  },
-  titleWidth: {
-    type: [Number, String],
-    default: '40%',
   },
   rowWidth: {
     type: [Number, String, Array],
