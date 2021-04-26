@@ -36,7 +36,7 @@ Vue.use(SwipeCell);
     desc="Description"
     title="Title"
     class="goods-card"
-    thumb="https://img.yzcdn.cn/vant/cat.jpeg"
+    thumb="https://img01.yzcdn.cn/vant/cat.jpeg"
   />
   <template #right>
     <van-button square text="Delete" type="danger" class="delete-button" />
@@ -101,7 +101,7 @@ export default {
 | name | Identifier of SwipeCell | _number \| string_ | - |
 | left-width | Width of the left swipe area | _number \| string_ | `auto` |
 | right-width | Width of the right swipe area | _number \| string_ | `auto` |
-| before-close `v2.3.0` | Callback function before close | _Function_ | - |
+| before-close | Callback function before close | _Function_ | - |
 | disabled | Whether to disabled swipe | _boolean_ | `false` |
 | stop-propagation | Whether to stop touchmove event propagation | _boolean_ | `false` |
 

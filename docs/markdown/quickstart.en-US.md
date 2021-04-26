@@ -5,10 +5,10 @@
 ### npm
 
 ```bash
-# Install vant 2.x for Vue 2 project
+# Install Vant 2 for Vue 2 project
 npm i vant -S
 
-# Install vant 3.x for Vue 3 project
+# Install Vant 3 for Vue 3 project
 npm i vant@next -S
 ```
 
@@ -57,7 +57,7 @@ vue create hello-world
 vue ui
 ```
 
-![](https://img.yzcdn.cn/vant/vue-cli-demo-201809030812.png)
+![](https://img01.yzcdn.cn/vant/vue-cli-demo-201809030812.png)
 
 In the GUI, click on 'Dependencies' -> `Install Dependencies` and add `vant` to the dependencies.
 

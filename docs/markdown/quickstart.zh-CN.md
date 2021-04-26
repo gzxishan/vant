@@ -11,10 +11,10 @@
 在现有项目中使用 Vant 时，可以通过 `npm` 或 `yarn` 进行安装：
 
 ```bash
-# Vue 2 项目，安装 Vant 2.x 版本：
+# Vue 2 项目，安装 Vant 2：
 npm i vant -S
 
-# Vue 3 项目，安装 Vant 3.x 版本：
+# Vue 3 项目，安装 Vant 3：
 npm i vant@next -S
 ```
 
@@ -64,7 +64,7 @@ vue create hello-world
 vue ui
 ```
 
-![](https://img.yzcdn.cn/vant/vue-cli-demo-201809032000.png)
+![](https://img01.yzcdn.cn/vant/vue-cli-demo-201809032000.png)
 
 在图形化界面中，点击 `依赖` -> `安装依赖`，然后将 `vant` 添加到依赖中即可。
 

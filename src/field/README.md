@@ -239,7 +239,7 @@ Use `input-align` prop to align the input value.
 | show-word-limit | Whether to show word limit, need to set the `maxlength` prop | _boolean_ | `false` |
 | error | Whether to show error info | _boolean_ | `false` |
 | error-message | Error message | _string_ | - |
-| formatter `v2.4.2` | Input value formatter | _Function_ | - |
+| formatter | Input value formatter | _Function_ | - |
 | format-trigger `v2.8.7` | When to format value，can be set to `onBlur` | _string_ | `onChange` |
 | arrow-direction | Can be set to `left` `up` `down` | _string_ | `right` |
 | label-class | Label className | _any_ | - |
@@ -252,6 +252,7 @@ Use `input-align` prop to align the input value.
 | right-icon | Right side icon name | _string_ | - |
 | icon-prefix `v2.5.3` | Icon className prefix | _string_ | `van-icon` |
 | rules `v2.5.0` | Form validation rules | _Rule[]_ | - |
+| autocomplete | [autocomplete](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/autocomplete) attribute of native input element | _string_ | - |
 
 ### Events
 

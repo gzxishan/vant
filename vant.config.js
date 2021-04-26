@@ -1,13 +1,11 @@
-//import pkg from './package.json';
-
-const publicPath = "/vant/2.12.2/";
+const publicPath = "/vant/2.12.15/";
 
 module.exports = {
   name: 'vant',
   build: {
     skipInstall: ['lazyload'],
     site: {
-      publicPath: publicPath || process.env.PUBLIC_PATH || 'https://b.yzcdn.cn/vant/',
+      publicPath: publicPath || process.env.PUBLIC_PATH || '/vant/',
     },
     vetur: {
       tagPrefix: 'van-',
@@ -15,30 +13,26 @@ module.exports = {
   },
   site: {
     defaultLang: 'en-US',
-    versions: [{
-        label: '1.x',
-        link: '/vant/1.x/'
-      },
-      {
-        label: '3.x',
-        link: '/vant/next/'
-      },
+    versions: [
+      { label: 'v1', link: '/vant/v1/' },
+      { label: 'v3', link: '/vant/v3/' },
     ],
     baiduAnalytics: {
       seed: 'ad6b5732c36321f2dafed737ac2da92f',
     },
     htmlPluginOptions: {
       meta: {
-        'docsearch:version': '2.x',
+        'docsearch:version': 'v2',
       },
     },
     locales: {
       'zh-CN': {
         title: 'Vant',
-        description: '轻量、可靠的移动端 Vue 组件库',
-        logo: 'https://img.yzcdn.cn/vant/logo.png',
+        description: '轻量、可靠的移动端组件库',
+        logo: 'https://img01.yzcdn.cn/vant/logo.png',
         langLabel: '中文',
-        links: [{
+        links: [
+          {
             logo: 'https://b.yzcdn.cn/vant/logo/weapp.svg',
             url: '/vant-weapp',
           },
@@ -51,6 +45,9 @@ module.exports = {
           apiKey: '90067aecdaa2c85220e2783cd305caac',
           indexName: 'vant',
           placeholder: '搜索文档...',
+          algoliaOptions: {
+            facetFilters: ['version:v2'],
+          },
           transformData(hits) {
             if (location.hostname === 'vant-contrib.gitee.io') {
               hits.forEach((hit) => {
@@ -64,9 +61,11 @@ module.exports = {
             }
           },
         },
-        nav: [{
+        nav: [
+          {
             title: '开发指南',
-            items: [{
+            items: [
+              {
                 path: 'home',
                 title: '介绍',
               },
@@ -106,7 +105,8 @@ module.exports = {
           },
           {
             title: '基础组件',
-            items: [{
+            items: [
+              {
                 path: 'button',
                 title: 'Button 按钮',
               },
@@ -142,13 +142,14 @@ module.exports = {
           },
           {
             title: '表单组件',
-            items: [{
+            items: [
+              {
                 path: 'calendar',
                 title: 'Calendar 日历',
               },
               {
                 path: 'cascader',
-                title: 'Cascader 级联选择'
+                title: 'Cascader 级联选择',
               },
               {
                 path: 'checkbox',
@@ -210,7 +211,8 @@ module.exports = {
           },
           {
             title: '反馈组件',
-            items: [{
+            items: [
+              {
                 path: 'action-sheet',
                 title: 'ActionSheet 动作面板',
               },
@@ -250,7 +252,8 @@ module.exports = {
           },
           {
             title: '展示组件',
-            items: [{
+            items: [
+              {
                 path: 'badge',
                 title: 'Badge 徽标',
               },
@@ -322,7 +325,8 @@ module.exports = {
           },
           {
             title: '导航组件',
-            items: [{
+            items: [
+              {
                 path: 'grid',
                 title: 'Grid 宫格',
               },
@@ -358,7 +362,8 @@ module.exports = {
           },
           {
             title: '业务组件',
-            items: [{
+            items: [
+              {
                 path: 'address-edit',
                 title: 'AddressEdit 地址编辑',
               },
@@ -406,7 +411,8 @@ module.exports = {
           },
           {
             title: '废弃',
-            items: [{
+            items: [
+              {
                 path: 'panel',
                 title: 'Panel 面板',
               },
@@ -421,9 +427,10 @@ module.exports = {
       'en-US': {
         title: 'Vant',
         description: 'Mobile UI Components built on Vue',
-        logo: 'https://img.yzcdn.cn/vant/logo.png',
+        logo: 'https://img01.yzcdn.cn/vant/logo.png',
         langLabel: 'En',
-        links: [{
+        links: [
+          {
             logo: 'https://b.yzcdn.cn/vant/logo/weapp.svg',
             url: '/vant-weapp',
           },
@@ -436,10 +443,15 @@ module.exports = {
           apiKey: '90067aecdaa2c85220e2783cd305caac',
           indexName: 'vant',
           placeholder: 'Search...',
+          algoliaOptions: {
+            facetFilters: ['version:v2'],
+          },
         },
-        nav: [{
+        nav: [
+          {
             title: 'Essentials',
-            items: [{
+            items: [
+              {
                 path: 'home',
                 title: 'Introduction',
               },
@@ -467,7 +479,8 @@ module.exports = {
           },
           {
             title: 'Basic Components',
-            items: [{
+            items: [
+              {
                 path: 'button',
                 title: 'Button',
               },
@@ -503,13 +516,14 @@ module.exports = {
           },
           {
             title: 'Form Components',
-            items: [{
+            items: [
+              {
                 path: 'calendar',
                 title: 'Calendar',
               },
               {
                 path: 'cascader',
-                title: 'Cascader'
+                title: 'Cascader',
               },
               {
                 path: 'checkbox',
@@ -575,7 +589,8 @@ module.exports = {
           },
           {
             title: 'Action Components',
-            items: [{
+            items: [
+              {
                 path: 'action-sheet',
                 title: 'ActionSheet',
               },
@@ -615,7 +630,8 @@ module.exports = {
           },
           {
             title: 'Display Components',
-            items: [{
+            items: [
+              {
                 path: 'badge',
                 title: 'Badge',
               },
@@ -687,7 +703,8 @@ module.exports = {
           },
           {
             title: 'Navigation Components',
-            items: [{
+            items: [
+              {
                 path: 'grid',
                 title: 'Grid',
               },
@@ -723,7 +740,8 @@ module.exports = {
           },
           {
             title: 'Business Components',
-            items: [{
+            items: [
+              {
                 path: 'address-edit',
                 title: 'AddressEdit',
               },
@@ -771,7 +789,8 @@ module.exports = {
           },
           {
             title: 'Deprecated',
-            items: [{
+            items: [
+              {
                 path: 'panel',
                 title: 'Panel',
               },

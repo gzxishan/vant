@@ -2,7 +2,7 @@
 
 ### 提示
 
-当前文档为 Vant 2.x 版本的更新日志，如需查询 Vant 3.x 的更新内容，请访问 [Vant 3.x 更新日志](https://youzan.github.io/vant/next/#/zh-CN/changelog)。
+当前文档为 Vant 2 的更新日志，如需查询 Vant 3 的更新内容，请访问 [Vant 3 更新日志](https://youzan.github.io/vant/v3/#/zh-CN/changelog)。
 
 ### 介绍
 
@@ -12,9 +12,150 @@ Vant 遵循 [Semver](https://semver.org/lang/zh-CN/) 语义化版本规范。
 
 - 修订号：每周发布，包含新特性和问题修复。
 - 次版本号：每隔一至二个月发布，包含新特性和较大的功能更新，向下兼容。
-- 主版本号：发布时间不定，包含不兼容更新，预计下一个主版本会与 Vue 3.0 同期发布。
+- 主版本号：无固定发布时间，包含不兼容更新。
 
 ## 更新内容
+
+### [v2.12.14](https://github.com/youzan/vant/compare/v2.12.13...v2.12.14)
+
+`2021-04-18`
+
+**Feature**
+
+- sku: 商品属性默认选中交互逻辑修改 [#8559](https://github.com/youzan/vant/issues/8559)
+- sku: 支持商品属性必选配置 [#8558](https://github.com/youzan/vant/issues/8558)
+
+**Bug Fixes**
+
+- Calendar: 修复在某些下副标题更新不正确的问题 [#8513](https://github.com/youzan/vant/issues/8513)
+- ShareSheet: 修复 duration 属性不生效的问题 [#8542](https://github.com/youzan/vant/issues/8542)
+
+### [v2.12.13](https://github.com/youzan/vant/compare/v2.12.12...v2.12.13)
+
+`2021-04-11`
+
+**Feature**
+
+- Sticky: 新增 change 事件 [#8479](https://github.com/youzan/vant/issues/8479)
+
+### [v2.12.12](https://github.com/youzan/vant/compare/v2.12.11...v2.12.12)
+
+`2021-04-05`
+
+**Bug Fixes**
+
+- 修复 Webstorm 下组件标签提示不正确的问题 [#8450](https://github.com/youzan/vant/issues/8450)
+
+### [v2.12.11](https://github.com/youzan/vant/compare/v2.12.10...v2.12.11)
+
+`2021-03-30`
+
+**Bug Fixes**
+
+- Field: 修复在个别情况下错误地清除错误提示的问题 [#8412](https://github.com/youzan/vant/issues/8412)
+- Tabs: 修复在 safari 上左滑退出页面时手势判断错误的问题 [#8387](https://github.com/youzan/vant/issues/8387)
+
+### [v2.12.10](https://github.com/youzan/vant/compare/v2.12.9...v2.12.10)
+
+`2021-03-19`
+
+**Bug Fixes**
+
+- Utils: 修复 deepClone 未正确深拷贝的问题 [#8326](https://github.com/youzan/vant/issues/8326)
+- Swipe: 修复添加 scale 动画时宽度计算错误的问题 [#8329](https://github.com/youzan/vant/issues/8329)
+
+### [v2.12.9](https://github.com/youzan/vant/compare/v2.12.8...v2.12.9)
+
+`2021-03-09`
+
+**Feature**
+
+- AddressList: 新增 tag 插槽 [#8311](https://github.com/youzan/vant/issues/8311)
+
+### [v2.12.8](https://github.com/youzan/vant/compare/v2.12.7...v2.12.8)
+
+`2021-03-07`
+
+**Feature**
+
+- ImagePreview: 新增 transition 属性 [#8273](https://github.com/youzan/vant/issues/8273)
+- PullRefresh: 新增 pull-distance 属性 [#8279](https://github.com/youzan/vant/issues/8279)
+- Locale: 新增 th-TH 泰语 [#8247](https://github.com/youzan/vant/issues/8247)
+
+**Bug Fixes**
+
+- ActionSheet: 修复返回页面时可能错误地重新打开的问题 [#8271](https://github.com/youzan/vant/issues/8271)
+- ImagePreview: 修复第一次打开时动画缺失的问题 [#8274](https://github.com/youzan/vant/issues/8274)
+- Stepper: 修复在 iOS14 下禁用时输入框文字不可见的问题 [#8278](https://github.com/youzan/vant/issues/8278)
+
+### [v2.12.7](https://github.com/youzan/vant/compare/v2.12.6...v2.12.7)
+
+`2021-02-28`
+
+**Feature**
+
+- Step: 新增 finish-icon 插槽 [#8240](https://github.com/youzan/vant/issues/8240)
+- Steps: 新增 finish-icon 属性 [#8237](https://github.com/youzan/vant/issues/8237)
+
+**Bug Fixes**
+
+- DatetimePicker: 修复 v-model 为 null 时初始值不正确的问题 [#7832](https://github.com/youzan/vant/issues/7832)
+- Empty: 修复 linearGradient id 可能导致冲突的问题 [#8011](https://github.com/youzan/vant/issues/8011)
+- GoodsActionIcon: 修复控制台存在 info 属性 warning 的问题 [#8040](https://github.com/youzan/vant/issues/8040)
+- Tabs: 修复 v-model 值为 0 时激活标签可能不正确的问题 [#8087](https://github.com/youzan/vant/issues/8087)
+
+### [v2.12.6](https://github.com/youzan/vant/compare/v2.12.5...v2.12.6)
+
+`2021-01-26`
+
+**Feature**
+
+- Icons: 新增 wechat 图标, 重命名原 wechat 图标为 wechat-pay [b3cd8c](https://github.com/youzan/vant/commit/b3cd8c14aea9e542a9de4ba9999e50c3ecbf3b3c)
+
+**Bug Fixes**
+
+- 修复部分地区无法访问 CDN 静态资源的问题 [#8000](https://github.com/youzan/vant/issues/8000)
+
+**perf**
+
+- Sku: 优化图标加载性能 [#7992](https://github.com/youzan/vant/issues/7992)
+
+### [v2.12.5](https://github.com/youzan/vant/compare/v2.12.4...v2.12.5)
+
+`2021-01-24`
+
+**Feature**
+
+- Calendar: reset 方法支持重置到指定日期 [#7943](https://github.com/youzan/vant/issues/7943)
+- ImagePreview: 在调用 swipeTo 方法后自动重置缩放状态 [#7974](https://github.com/youzan/vant/issues/7974)
+- ImagePreview: swipe-duration 属性的默认值调整为 300ms [#7973](https://github.com/youzan/vant/issues/7973)
+- ShareSheet: 新增 wechat-moments 朋友圈图标 [4f94dd](https://github.com/youzan/vant/commit/4f94dd3260fedd0c67b8b542c106119dd1ca7b37)
+
+**style**
+
+- ShareSheet: 更新 qrcode 图标 [335510](https://github.com/youzan/vant/commit/33551062e3e946107b05841ddd3914ab996600ce)
+
+### [v2.12.4](https://github.com/youzan/vant/compare/v2.12.3...v2.12.4)
+
+`2021-01-17`
+
+**Feature**
+
+- Cascader: 新增 field-names 属性，用于自定义字段名 [#7932](https://github.com/youzan/vant/issues/7932)
+- Cell: 支持在设置 is-link 时将 clickable 设置为 false 来禁用点击状态 [#7922](https://github.com/youzan/vant/issues/7922)
+
+**Bug Fixes**
+
+- Circle: 修复渐变色不生效的问题 [#7910](https://github.com/youzan/vant/issues/7910) [#7897](https://github.com/youzan/vant/issues/7897)
+- Field: 修复类型为 number 时可以输入点号开头的问题 [#7921](https://github.com/youzan/vant/issues/7921)
+
+### [v2.12.3](https://github.com/youzan/vant/compare/v2.12.2...v2.12.3)
+
+`2021-01-09`
+
+**Bug Fixes**
+
+- Col: 适配 less 4.0 [d8a81b](https://github.com/youzan/vant/commit/d8a81b26d8d867e810e54a40ea0d647bb6af3bee)
 
 ### [v2.12.2](https://github.com/youzan/vant/compare/v2.12.1...v2.12.2)
 
@@ -121,7 +262,7 @@ Vant 遵循 [Semver](https://semver.org/lang/zh-CN/) 语义化版本规范。
 - 新增 [Badge 徽标](#/zh-CN/badge)组件 [#7602](https://github.com/youzan/vant/issues/7602)
 - 新增 [Popover 气泡弹出框](#/zh-CN/popover)组件 [#7579](https://github.com/youzan/vant/issues/7579)
 
-![](https://img.yzcdn.cn/vant/component-preview-1122.png)
+![](https://img01.yzcdn.cn/vant/component-preview-1122.png)
 
 **Feature**
 
@@ -854,7 +995,7 @@ Vant 遵循 [Semver](https://semver.org/lang/zh-CN/) 语义化版本规范。
 - 新增 ShareSheet 分享面板组件，用于进行分享操作 [#6019](https://github.com/youzan/vant/issues/6019)
 - 新增 Empty 空状态组件，作为空状态时的占位提示 [#6010](https://github.com/youzan/vant/issues/6010)
 
-<img src="https://img.yzcdn.cn/vant/component-preview-2.6.png" style="width: 540px;">
+<img src="https://img01.yzcdn.cn/vant/component-preview-2.6.png" style="width: 540px;">
 
 **Feature**
 
@@ -1267,7 +1408,7 @@ Vant 遵循 [Semver](https://semver.org/lang/zh-CN/) 语义化版本规范。
 
 - 新增 Calendar 日历组件
 
-![](https://img.yzcdn.cn/vant/calendar-12282.png)
+![](https://img01.yzcdn.cn/vant/calendar-12282.png)
 
 **Feature**
 
@@ -2108,7 +2249,7 @@ Vant 遵循 [Semver](https://semver.org/lang/zh-CN/) 语义化版本规范。
 - <b>Skeleton 骨架屏</b>，在待加载区域展示的占位区块，提供界面加载过程中的过渡效果
 - <b>DropdownMenu 下拉菜单</b>，用于列表的分类选择、筛选及排序
 
-![](https://img.yzcdn.cn/public_files/2019/06/10/141ac9b67c06be0811c86c4c1c571c9d.png)
+![](https://img01.yzcdn.cn/public_files/2019/06/10/141ac9b67c06be0811c86c4c1c571c9d.png)
 
 #### 新文档
 
@@ -2116,13 +2257,13 @@ Vant 遵循 [Semver](https://semver.org/lang/zh-CN/) 语义化版本规范。
 
 此外，文档站点也支持了<b>搜索</b>和<b>版本切换</b>。
 
-![](https://img.yzcdn.cn/public_files/2019/06/10/63b666fa52493402c87db6146a715341.png)
+![](https://img01.yzcdn.cn/public_files/2019/06/10/63b666fa52493402c87db6146a715341.png)
 
 #### 样式定制
 
 移动端 UI 风格多变，对组件的可定制性要求较高。从 2.0 版本开始，Vant 中的所有组件都支持通过 <b>Less 变量</b>进行样式定制。同时我们新增了较多样式相关的 Props，便于快速定制组件风格。
 
-![](https://img.yzcdn.cn/public_files/2019/06/11/9a066c1a212264c7ae56065e1f13d317.png)
+![](https://img01.yzcdn.cn/public_files/2019/06/11/9a066c1a212264c7ae56065e1f13d317.png)
 
 #### 更轻量
 
@@ -2381,6 +2522,6 @@ Vant 遵循 [Semver](https://semver.org/lang/zh-CN/) 语义化版本规范。
 
 同时，Vant 3.0 版本也在酝酿当中，不出意外的话，<b>3.0 版本会基于 Vue 3.0 实现，并争取和 Vue 3.0 同期发布</b>。
 
-对于 Vant 1.x 版本，后续会进入维护期，跟进问题修复，但不再引入功能性改动。
+对于 Vant v1 版本，后续会进入维护期，跟进问题修复，但不再引入功能性改动。
 
-![](https://img.yzcdn.cn/public_files/2019/06/11/4e7202acbfc399622e428eb1485e1591.png)
+![](https://img01.yzcdn.cn/public_files/2019/06/11/4e7202acbfc399622e428eb1485e1591.png)

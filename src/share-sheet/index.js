@@ -15,6 +15,7 @@ const PRESET_ICONS = [
   'poster',
   'qrcode',
   'weapp-qrcode',
+  'wechat-moments',
 ];
 
 const [createComponent, bem, t] = createNamespace('share-sheet');
@@ -23,6 +24,7 @@ export default createComponent({
   props: {
     ...popupMixinProps,
     title: String,
+    duration: String,
     cancelText: String,
     description: String,
     getContainer: [String, Function],
@@ -64,7 +66,7 @@ export default createComponent({
 
     getIconURL(icon) {
       if (PRESET_ICONS.indexOf(icon) !== -1) {
-        return `https://img.yzcdn.cn/vant/share-icon-${icon}.png`;
+        return `https://img01.yzcdn.cn/vant/share-sheet-${icon}.png`;
       }
 
       return icon;

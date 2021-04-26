@@ -23,6 +23,7 @@ ignore-dev-xs-**
 
 *.log*
 .cache
+.DS_Store
 .idea
 .vscode
 

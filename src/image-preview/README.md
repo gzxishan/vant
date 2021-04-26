@@ -15,8 +15,8 @@ Vue.use(ImagePreview);
 
 ```js
 ImagePreview([
-  'https://img.yzcdn.cn/vant/apple-1.jpg',
-  'https://img.yzcdn.cn/vant/apple-2.jpg',
+  'https://img01.yzcdn.cn/vant/apple-1.jpg',
+  'https://img01.yzcdn.cn/vant/apple-2.jpg',
 ]);
 ```
 
@@ -25,8 +25,8 @@ ImagePreview([
 ```js
 ImagePreview({
   images: [
-    'https://img.yzcdn.cn/vant/apple-1.jpg',
-    'https://img.yzcdn.cn/vant/apple-2.jpg',
+    'https://img01.yzcdn.cn/vant/apple-1.jpg',
+    'https://img01.yzcdn.cn/vant/apple-2.jpg',
   ],
   startPosition: 1,
 });
@@ -39,8 +39,8 @@ After setting the `closeable` attribute, the close icon will be displayed in the
 ```js
 ImagePreview({
   images: [
-    'https://img.yzcdn.cn/vant/apple-1.jpg',
-    'https://img.yzcdn.cn/vant/apple-2.jpg',
+    'https://img01.yzcdn.cn/vant/apple-1.jpg',
+    'https://img01.yzcdn.cn/vant/apple-2.jpg',
   ],
   closeable: true,
 });
@@ -53,8 +53,8 @@ import { Toast } from 'vant';
 
 ImagePreview({
   images: [
-    'https://img.yzcdn.cn/vant/apple-1.jpg',
-    'https://img.yzcdn.cn/vant/apple-2.jpg',
+    'https://img01.yzcdn.cn/vant/apple-1.jpg',
+    'https://img01.yzcdn.cn/vant/apple-2.jpg',
   ],
   onClose() {
     Toast('closed');
@@ -67,8 +67,8 @@ ImagePreview({
 ```js
 const instance = ImagePreview({
   images: [
-    'https://img.yzcdn.cn/vant/apple-1.jpg',
-    'https://img.yzcdn.cn/vant/apple-2.jpg',
+    'https://img01.yzcdn.cn/vant/apple-1.jpg',
+    'https://img01.yzcdn.cn/vant/apple-2.jpg',
   ],
   asyncClose: true,
 });
@@ -93,8 +93,8 @@ export default {
       show: false,
       index: 0,
       images: [
-        'https://img.yzcdn.cn/vant/apple-1.jpg',
-        'https://img.yzcdn.cn/vant/apple-2.jpg',
+        'https://img01.yzcdn.cn/vant/apple-1.jpg',
+        'https://img01.yzcdn.cn/vant/apple-2.jpg',
       ],
     };
   },
@@ -117,7 +117,7 @@ export default {
 | showIndex | Whether to show index | _boolean_ | `true` |
 | showIndicators | Whether to show indicators | _boolean_ | `false` |
 | loop | Whether to enable loop | _boolean_ | `true` |
-| swipeDuration | Animation duration (ms) | _number \| string_ | `500` |
+| swipeDuration | Animation duration (ms) | _number \| string_ | `300` |
 | onClose | Emitted when ImagePreview is closed | _Function_ | - |
 | onChange | Emitted when current image changed | _Function_ | - |
 | onScale | Emitted when scaling current image | _Function_ | - |
@@ -129,6 +129,7 @@ export default {
 | closeable `v2.5.0` | Whether to show close icon | _boolean_ | `false` |
 | closeIcon `v2.5.0` | Close icon name | _string_ | `clear` |
 | closeIconPosition `v2.5.0` | Close icon position，can be set to `top-left` `bottom-left` `bottom-right` | _string_ | `top-right` |
+| transition `v2.12.8` | Transition, equivalent to `name` prop of [transtion](https://vuejs.org/v2/api/#transition) | _string_ | `van-fade` |
 | getContainer | Return the mount node for ImagePreview | _string \| () => Element_ | - |
 
 ### Props
@@ -137,7 +138,7 @@ export default {
 | --- | --- | --- | --- |
 | images | Images URL list | _string[]_ | `[]` |
 | start-position | Start position | _number \| string_ | `0` |
-| swipe-duration | Animation duration (ms) | _number \| string_ | `500` |
+| swipe-duration | Animation duration (ms) | _number \| string_ | `300` |
 | show-index | Whether to show index | _boolean_ | `true` |
 | show-indicators | Whether to show indicators | _boolean_ | `false` |
 | loop | Whether to enable loop | _boolean_ | `true` |
@@ -149,6 +150,7 @@ export default {
 | closeable `v2.5.0` | Whether to show close icon | _boolean_ | `false` |
 | close-icon `v2.5.0` | Close icon name | _string_ | `clear` |
 | close-icon-position `v2.5.0` | Close icon position，can be set to `top-left` `bottom-left` `bottom-right` | _string_ | `top-right` |
+| transition `v2.12.8` | Transition, equivalent to `name` prop of [transtion](https://vuejs.org/v2/api/#transition) | _string_ | `van-fade` |
 | get-container | Return the mount node for ImagePreview | _string \| () => Element_ | - |
 
 ### Events

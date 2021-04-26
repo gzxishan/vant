@@ -142,8 +142,8 @@ export default {
 | show-soldout-sku | 是否展示售罄的 sku，默认展示并置灰 | _boolean_ | `true` |
 | disable-soldout-sku `v2.11.3` | 是否禁用售罄的 sku | _boolean_ | `true` |
 | safe-area-inset-bottom | 是否开启[底部安全区适配](#/zh-CN/advanced-usage#di-bu-an-quan-qu-gua-pei) | _boolean_ | `true` |
-| start-sale-num `v2.3.0` | 起售数量 | _number_ | `1` |
-| properties `v2.4.2` | 商品属性 | _array_ | - |
+| start-sale-num | 起售数量 | _number_ | `1` |
+| properties | 商品属性 | _array_ | - |
 | preview-on-click-image `v2.5.2` | 是否在点击商品图片时自动预览 | _boolean_ | `true` |
 | show-header-image `v2.9.0` | 是否展示头部图片 | _boolean_ | `true` |
 | lazy-load `v2.9.0` | 是否开启图片懒加载，须配合 [Lazyload](#/zh-CN/lazyload) 组件使用 | _boolean_ | `false` |
@@ -165,10 +165,10 @@ export default {
 
 通过 ref 可以获取到 Sku 实例并调用实例方法，详见[组件实例方法](#/zh-CN/advanced-usage#zu-jian-shi-li-fang-fa)。
 
-| 方法名                    | 说明                   | 参数 | 返回值  |
-| ------------------------- | ---------------------- | ---- | ------- |
-| getSkuData                | 获取当前 skuData       | -    | skuData |
-| resetSelectedSku `v2.3.0` | 重置选中规格到初始状态 | -    | -       |
+| 方法名           | 说明                   | 参数 | 返回值  |
+| ---------------- | ---------------------- | ---- | ------- |
+| getSkuData       | 获取当前 skuData       | -    | skuData |
+| resetSelectedSku | 重置选中规格到初始状态 | -    | -       |
 
 ### Slots
 
@@ -186,7 +186,7 @@ Sku 组件默认划分好了若干区块，这些区块都定义成了插槽，�
 | extra-sku-group | 额外商品 sku 展示区，一般用不到 |
 | sku-stepper | 商品数量选择区 |
 | sku-messages | 商品留言区 |
-| sku-actions-top `v2.4.7` | 操作按钮区顶部内容，无默认展示内容，按需使用 |
+| sku-actions-top | 操作按钮区顶部内容，无默认展示内容，按需使用 |
 | sku-actions | 操作按钮区 |
 
 ### sku 对象结构
@@ -203,14 +203,14 @@ sku: {
         {
           id: '1', // skuValueId：规格值 id
           name: '红色', // skuValueName：规格值名称
-          imgUrl: 'https://img.yzcdn.cn/1.jpg', // 规格类目图片，只有第一个规格类目可以定义图片
-          previewImgUrl: 'https://img.yzcdn.cn/1p.jpg', // 用于预览显示的规格类目图片
+          imgUrl: 'https://img01.yzcdn.cn/1.jpg', // 规格类目图片，只有第一个规格类目可以定义图片
+          previewImgUrl: 'https://img01.yzcdn.cn/1p.jpg', // 用于预览显示的规格类目图片
         },
         {
           id: '1',
           name: '蓝色',
-          imgUrl: 'https://img.yzcdn.cn/2.jpg',
-          previewImgUrl: 'https://img.yzcdn.cn/2p.jpg',
+          imgUrl: 'https://img01.yzcdn.cn/2.jpg',
+          previewImgUrl: 'https://img01.yzcdn.cn/2p.jpg',
         }
       ],
       largeImageMode: true, //  是否展示大图模式
@@ -294,7 +294,7 @@ sku: {
 ```js
 goods: {
   // 默认商品 sku 缩略图
-  picture: 'https://img.yzcdn.cn/1.jpg';
+  picture: 'https://img01.yzcdn.cn/1.jpg';
 }
 ```
 
@@ -337,7 +337,7 @@ messageConfig: {
   // 图片上传回调，需要返回一个promise，promise正确执行的结果需要是一个图片url
   uploadImg: () => {
     return new Promise((resolve) => {
-      setTimeout(() => resolve('https://img.yzcdn.cn/upload_files/2017/02/21/FjKTOxjVgnUuPmHJRdunvYky9OHP.jpg!100x100.jpg'), 1000);
+      setTimeout(() => resolve('https://img01.yzcdn.cn/upload_files/2017/02/21/FjKTOxjVgnUuPmHJRdunvYky9OHP.jpg!100x100.jpg'), 1000);
     });
   },
   // 最大上传体积 (MB)

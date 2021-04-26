@@ -255,10 +255,10 @@ Following props are supported when the poppable is true
 | v-model | Whether to show calendar | _boolean_ | `false` |
 | position | Popup position, can be set to `top` `right` `left` | _string_ | `bottom` |
 | round | Whether to show round corner | _boolean_ | `true` |
-| close-on-popstate `v2.4.4` | Whether to close when popstate | _boolean_ | `true` |
+| close-on-popstate | Whether to close when popstate | _boolean_ | `true` |
 | close-on-click-overlay | Whether to close when overlay is clicked | _boolean_ | `true` |
 | safe-area-inset-bottom | Whether to enable bottom safe area adaptation | _boolean_ | `true` |
-| get-container `v2.4.4` | Return the mount node for Calendar | _string \| () => Element_ | - |
+| get-container | Return the mount node for Calendar | _string \| () => Element_ | - |
 
 ### Range Props
 
@@ -266,8 +266,8 @@ Following props are supported when the type is range
 
 | Attribute | Description | Type | Default |
 | --- | --- | --- | --- |
-| max-range `v2.4.3` | Number of selectable days | _number \| string_ | Unlimitied |
-| range-prompt `v2.4.3` | Error message when exceeded max range | _string_ | `Choose no more than xx days` |
+| max-range | Number of selectable days | _number \| string_ | Unlimitied |
+| range-prompt | Error message when exceeded max range | _string_ | `Choose no more than xx days` |
 | allow-same-day `v2.5.6` | Whether the start and end time of the range is allowed on the same day | _boolean_ | `false` |
 
 ### Multiple Props
@@ -277,7 +277,7 @@ Following props are supported when the type is multiple
 | Attribute | Description | Type | Default |
 | --- | --- | --- | --- |
 | max-range `v2.7.2` | Max count of selectable days | _number \| string_ | Unlimitied |
-| range-prompt `v2.4.3` | Error message when exceeded max count | _string_ | `Choose no more than xx days` |
+| range-prompt | Error message when exceeded max count | _string_ | `Choose no more than xx days` |
 
 ### Data Structure of Day
 
@@ -316,7 +316,7 @@ Use [ref](https://vuejs.org/v2/api/#ref) to get Calendar instance and call insta
 
 | Name | Description | Attribute | Return value |
 | --- | --- | --- | --- |
-| reset | Reset selected date to default date | - | - |
+| reset | Reset selected date, will reset to default date when no params passed | _date?: Date \| Date[]_ | - |
 | scrollToDate `v2.12.2` | Scroll to date | _date: Date_ | - |
 
 ### Less Variables

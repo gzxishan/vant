@@ -252,36 +252,36 @@ export default {
 
 ### Poppable Props
 
-当 Canlendar 的 `poppable` 为 `true` 时，支持以下 props:
+当 Calendar 的 `poppable` 为 `true` 时，支持以下 props:
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | v-model | 是否显示日历弹窗 | _boolean_ | `false` |
 | position | 弹出位置，可选值为 `top` `right` `left` | _string_ | `bottom` |
 | round | 是否显示圆角弹窗 | _boolean_ | `true` |
-| close-on-popstate `v2.4.4` | 是否在页面回退时自动关闭 | _boolean_ | `true` |
+| close-on-popstate | 是否在页面回退时自动关闭 | _boolean_ | `true` |
 | close-on-click-overlay | 是否在点击遮罩层后关闭 | _boolean_ | `true` |
 | safe-area-inset-bottom | 是否开启[底部安全区适配](#/zh-CN/advanced-usage#di-bu-an-quan-qu-gua-pei) | _boolean_ | `true` |
-| get-container `v2.4.4` | 指定挂载的节点，[用法示例](#/zh-CN/popup#zhi-ding-gua-zai-wei-zhi) | _string \| () => Element_ | - |
+| get-container | 指定挂载的节点，[用法示例](#/zh-CN/popup#zhi-ding-gua-zai-wei-zhi) | _string \| () => Element_ | - |
 
 ### Range Props
 
-当 Canlendar 的 `type` 为 `range` 时，支持以下 props:
+当 Calendar 的 `type` 为 `range` 时，支持以下 props:
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| max-range `v2.4.3` | 日期区间最多可选天数 | _number \| string_ | 无限制 |
-| range-prompt `v2.4.3` | 范围选择超过最多可选天数时的提示文案 | _string_ | `选择天数不能超过 xx 天` |
+| max-range | 日期区间最多可选天数 | _number \| string_ | 无限制 |
+| range-prompt | 范围选择超过最多可选天数时的提示文案 | _string_ | `选择天数不能超过 xx 天` |
 | allow-same-day `v2.5.6` | 是否允许日期范围的起止时间为同一天 | _boolean_ | `false` |
 
 ### Multiple Props
 
-当 Canlendar 的 `type` 为 `multiple` 时，支持以下 props:
+当 Calendar 的 `type` 为 `multiple` 时，支持以下 props:
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | max-range `v2.7.2` | 日期最多可选天数 | _number \| string_ | 无限制 |
-| range-prompt `v2.4.3` | 选择超过最多可选天数时的提示文案 | _string_ | `选择天数不能超过 xx 天` |
+| range-prompt | 选择超过最多可选天数时的提示文案 | _string_ | `选择天数不能超过 xx 天` |
 
 ### Day 数据结构
 
@@ -320,10 +320,10 @@ export default {
 
 通过 ref 可以获取到 Calendar 实例并调用实例方法，详见[组件实例方法](#/zh-CN/advanced-usage#zu-jian-shi-li-fang-fa)。
 
-| 方法名                 | 说明                   | 参数         | 返回值 |
-| ---------------------- | ---------------------- | ------------ | ------ |
-| reset                  | 重置选中的日期到默认值 | -            | -      |
-| scrollToDate `v2.12.2` | 滚动到某个日期         | _date: Date_ | -      |
+| 方法名 | 说明 | 参数 | 返回值 |
+| --- | --- | --- | --- |
+| reset | 将选中的日期重置到指定日期，未传参时会重置到默认日期 | _date?: Date \| Date[]_ | - |
+| scrollToDate `v2.12.2` | 滚动到某个日期 | _date: Date_ | - |
 
 ### 样式变量
 

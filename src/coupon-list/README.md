@@ -102,8 +102,8 @@ export default {
 | close-button-text | Close button text | _string_ | `Close` |
 | input-placeholder | Input placeholder | _string_ | `Coupon code` |
 | currency | Currency symbol | _string_ | `¥` |
-| empty-image | Placeholder image when list is empty | _string_ | `https://img.yzcdn.cn/vant/coupon-empty.png` |
-| show-count `v2.3.0` | Whether to show coupon count in tab title | _boolean_ | `true` |
+| empty-image | Placeholder image when list is empty | _string_ | `https://img01.yzcdn.cn/vant/coupon-empty.png` |
+| show-count | Whether to show coupon count in tab title | _boolean_ | `true` |
 
 ### CouponList Events
 
